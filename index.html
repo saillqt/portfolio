@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sahil Ladha · Designer from the Shadows</title>
+    <meta name="description" content="Portfolio of Sahil Ladha — Graphic Designer & Video Editor. Batman-themed creative portfolio.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Press+Start+2P&family=Creepster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Cursor glow effect -->
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <!-- Loading Screen -->
+    <div class="loader" id="loader">
+        <svg class="loader__bat" viewBox="0 0 100 50" width="120">
+            <path d="M50 0 C45 8,30 15,0 10 C10 25,20 40,50 50 C80 40,90 25,100 10 C70 15,55 8,50 0Z" fill="#f5c518"/>
+        </svg>
+        <div class="loader__bar"><div class="loader__fill"></div></div>
+        <p class="loader__text">INITIALIZING BATCAVE...</p>
+    </div>
+
+    <!-- ============ NAV ============ -->
+    <nav id="mainNav">
+        <a href="#hero" class="nav__logo">
+            <svg class="nav__bat-icon" viewBox="0 0 100 50" width="32">
+                <path d="M50 0 C45 8,30 15,0 10 C10 25,20 40,50 50 C80 40,90 25,100 10 C70 15,55 8,50 0Z" fill="currentColor"/>
+            </svg>
+            SAHIL
+        </a>
+        <ul class="nav__links">
+            <li><a href="#about" data-text="ABOUT">ABOUT</a></li>
+            <li><a href="#experience" data-text="XP">XP</a></li>
+            <li><a href="#skills" data-text="SKILLS">SKILLS</a></li>
+            <li><a href="#work" data-text="WORK">WORK</a></li>
+            <li><a href="#contact" data-text="CONTACT">CONTACT</a></li>
+        </ul>
+        <button class="nav__burger" id="navBurger" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <!-- ============ HERO ============ -->
+    <section id="hero" class="section">
+        <div class="hero__particles" id="heroParticles"></div>
+        <div class="hero__cityscape" aria-hidden="true"></div>
+        <div class="hero__grid-bg" aria-hidden="true"></div>
+        <div class="hero__beam" aria-hidden="true"></div>
+        <div class="noise" aria-hidden="true"></div>
+        <div class="hero__content">
+            <h1 class="hero__title">
+                <span class="hero__title-line hero__title-line--1" data-text="DESIGN">DESIGN</span>
+                <span class="hero__title-line hero__title-line--2" data-text="PORTFOLIO">PORTFOLIO</span>
+            </h1>
+            <div class="hero__sub">
+                <span class="hero__line"></span>
+                <p>GRAPHIC DESIGNER <span class="hero__amp">&</span> VIDEO EDITOR</p>
+                <span class="hero__line"></span>
+            </div>
+            <p class="hero__tagline">I'm <strong>Sahil Ladha</strong></p>
+            <a href="#about" class="hero__cta magnetic">
+                <span class="hero__cta-text">BEGIN INVESTIGATION</span>
+                <span class="hero__cta-icon">↓</span>
+            </a>
+        </div>
+        <div class="hero__scroll" aria-hidden="true">
+            <span></span>
+            <p>SCROLL</p>
+        </div>
+        <!-- Gotham Skyline SVG -->
+        <div class="hero__skyline">
+            <svg viewBox="0 0 1440 200" preserveAspectRatio="none">
+                <path d="M0,200 L0,140 L40,140 L40,100 L55,100 L55,80 L65,80 L65,100 L80,100 L80,130 L120,130 L120,90 L135,90 L135,60 L140,40 L145,60 L150,90 L180,90 L180,110 L220,110 L220,70 L240,70 L240,50 L250,30 L260,50 L260,70 L280,70 L280,100 L320,100 L320,120 L380,120 L380,80 L400,80 L400,60 L410,40 L420,60 L420,80 L440,80 L440,110 L500,110 L500,130 L540,130 L540,90 L560,90 L560,70 L570,50 L580,70 L580,90 L600,90 L600,120 L660,120 L660,100 L700,100 L700,80 L720,80 L720,50 L730,20 L740,50 L740,80 L760,80 L760,100 L800,100 L800,130 L860,130 L860,90 L880,90 L880,70 L890,55 L900,70 L900,90 L920,90 L920,120 L980,120 L980,100 L1020,100 L1020,75 L1040,75 L1040,55 L1050,35 L1060,55 L1060,75 L1080,75 L1080,100 L1120,100 L1120,130 L1180,130 L1180,90 L1200,90 L1200,70 L1210,50 L1220,70 L1220,90 L1260,90 L1260,110 L1300,110 L1300,85 L1320,85 L1320,65 L1330,45 L1340,65 L1340,85 L1360,85 L1360,120 L1400,120 L1400,140 L1440,140 L1440,200Z" fill="#0a0a0a"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- ============ MARQUEE ============ -->
+    <div class="marquee" aria-hidden="true">
+        <div class="marquee__track">
+            <span>★ AVAILABLE FOR FREELANCE</span><span>★ GRAPHIC DESIGN</span><span>★ BRAND IDENTITY</span><span>★ INFOGRAPHICS</span><span>★ SOCIAL MEDIA</span><span>★ LET'S TALK</span>
+            <span>★ AVAILABLE FOR FREELANCE</span><span>★ GRAPHIC DESIGN</span><span>★ BRAND IDENTITY</span><span>★ INFOGRAPHICS</span><span>★ SOCIAL MEDIA</span><span>★ LET'S TALK</span>
+        </div>
+    </div>
+
+    <!-- ============ ABOUT ============ -->
+    <section id="about" class="section section--dark">
+        <div class="about__grid">
+            <div class="about__left">
+                <span class="section__label">// ABOUT ME</span>
+                <div class="about__age-block">
+                    <span class="about__age">25</span>
+                    <span class="about__age-text">YEAR OLD VIGILANTE</span>
+                </div>
+                <h2 class="about__role">
+                    GRAPHIC<br>
+                    <span class="text--stroke">DESIGNER</span>
+                </h2>
+                <div class="about__also">
+                    <p class="about__also-label">ALSO A DECENT</p>
+                    <h3 class="about__role-2">VIDEO<br><span class="text--stroke">EDITOR</span></h3>
+                </div>
+                <p class="about__batman-note">i might also be <em>batman</em> <span>🦇</span></p>
+            </div>
+            <div class="about__right">
+                <div class="about__photo-wrap">
+                    <img data-src="sahil.webp" alt="Sahil Ladha" class="about__photo">
+                    <div class="about__photo-scan"></div>
+                    <div class="about__photo-hud">
+                        <span>BIO_SCAN: <span class="text--yellow">ACTIVE</span></span>
+                        <span>MATCH: <span class="text--yellow">99.8%</span></span>
+                    </div>
+                </div>
+                <div class="about__card">
+                    <div class="about__card-header">
+                        <span class="about__card-dot"></span>
+                        <span class="about__card-dot"></span>
+                        <span class="about__card-dot"></span>
+                        <span class="about__card-title">PROFILE.bat</span>
+                    </div>
+                    <div class="about__card-body">
+                        <p><span class="code--key">name:</span> <span class="code--val">"Sahil Ladha"</span></p>
+                        <p><span class="code--key">class:</span> <span class="code--val">"Graphic Designer"</span></p>
+                        <p><span class="code--key">subclass:</span> <span class="code--val">"Video Editor"</span></p>
+                        <p><span class="code--key">level:</span> <span class="code--val">25</span></p>
+                        <p><span class="code--key">alignment:</span> <span class="code--val">"Chaotic Creative"</span></p>
+                        <p><span class="code--key">languages:</span> <span class="code--val">7 (almost)</span></p>
+                        <p><span class="code--key">secret_identity:</span> <span class="code--val">████████</span></p>
+                        <p class="code--blink">█</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ TRAITS ============ -->
+    <section id="traits" class="section section--dark traits">
+        <div class="traits__inner">
+            <div class="traits__head">
+                <span class="section__label">// PERSONALITY MATRIX</span>
+                <h2 class="traits__h">WHO IS <span class="text--yellow">BEHIND</span><br>THE <span class="text--stroke">COWL</span>?</h2>
+                <p class="traits__intro">A short briefing — <em>traits, tongues, and tells</em>.</p>
+            </div>
+
+            <div class="traits__grid2">
+                <!-- LEFT: Perk cards -->
+                <div class="perks">
+                    <div class="perk">
+                        <div class="perk__head">
+                            <span class="perk__num">01</span>
+                            <span class="perk__tag">+ PERK</span>
+                        </div>
+                        <h3 class="perk__title">SMART <span>WORKING</span></h3>
+                        <p class="perk__desc">Less hours, more output. Work smart, not hard — efficiency as a discipline.</p>
+                    </div>
+                    <div class="perk">
+                        <div class="perk__head">
+                            <span class="perk__num">02</span>
+                            <span class="perk__tag">+ PERK</span>
+                        </div>
+                        <h3 class="perk__title">CREATIVE <span>I MEAN, DUHH</span></h3>
+                        <p class="perk__desc">Half ideas, half instinct. Visual problem-solving with attitude.</p>
+                    </div>
+                    <div class="perk">
+                        <div class="perk__head">
+                            <span class="perk__num">03</span>
+                            <span class="perk__tag">+ PERK</span>
+                        </div>
+                        <h3 class="perk__title">CURIOUS <span>ALWAYS ASKING WHY</span></h3>
+                        <p class="perk__desc">Sometimes it's a problem.</p>
+                    </div>
+                    <div class="perk perk--accent">
+                        <div class="perk__head">
+                            <span class="perk__num">04</span>
+                            <span class="perk__tag">+ PERK</span>
+                        </div>
+                        <h3 class="perk__title">COMMUNICATIVE <span>7 TONGUES &amp; COUNTING</span></h3>
+                        <p class="perk__desc">Translates ideas across languages, stakeholders, and time zones.</p>
+                    </div>
+                </div>
+
+                <!-- RIGHT: Swipeable terminal deck -->
+                <div class="term-deck" id="termDeck">
+                    <!-- Tabs -->
+                    <div class="term-deck__tabs" role="tablist">
+                        <button class="term-deck__tab is-active" data-idx="0" type="button">LANG.bat</button>
+                        <button class="term-deck__tab" data-idx="1" type="button">STATS.bat</button>
+                        <button class="term-deck__tab" data-idx="2" type="button">TOOLBOX.bat</button>
+                        <button class="term-deck__tab" data-idx="3" type="button">NOW.bat</button>
+                    </div>
+
+                    <!-- Cards -->
+                    <div class="term-deck__viewport">
+                        <div class="term-deck__track">
+
+                            <!-- 0 — LANG.bat -->
+                            <div class="lang-card term-card is-active" data-idx="0">
+                                <div class="lang-card__header">
+                                    <span class="lang-card__dot"></span>
+                                    <span class="lang-card__dot"></span>
+                                    <span class="lang-card__dot"></span>
+                                    <span class="lang-card__title">LANG.bat</span>
+                                </div>
+                                <div class="lang-card__body">
+                                    <p class="lang-card__line"><span class="code--key">$</span> <span class="code--val">./scan_languages</span></p>
+                                    <p class="lang-card__line lang-card__line--muted">// loading proficiency map...</p>
+                                    <ul class="lang-list">
+                                        <li style="--p:100"><span class="lang-list__char">A</span><span class="lang-list__name">English</span><span class="lang-list__bar"><span class="lang-list__fill"></span></span></li>
+                                        <li style="--p:90"><span class="lang-list__char">क</span><span class="lang-list__name">Hindi</span><span class="lang-list__bar"><span class="lang-list__fill"></span></span></li>
+                                        <li style="--p:90"><span class="lang-list__char">ಕ</span><span class="lang-list__name">Kannada</span><span class="lang-list__bar"><span class="lang-list__fill"></span></span></li>
+                                        <li style="--p:70"><span class="lang-list__char">ತು</span><span class="lang-list__name">Tulu</span><span class="lang-list__bar"><span class="lang-list__fill"></span></span></li>
+                                        <li style="--p:30"><span class="lang-list__char">క</span><span class="lang-list__name">Telugu</span><span class="lang-list__bar"><span class="lang-list__fill"></span></span></li>
+                                        <li style="--p:20"><span class="lang-list__char">க</span><span class="lang-list__name">Tamil</span><span class="lang-list__bar"><span class="lang-list__fill"></span></span></li>
+                                        <li style="--p:5" class="lang-list__low"><span class="lang-list__char">カ</span><span class="lang-list__name">Japanese</span><span class="lang-list__bar"><span class="lang-list__fill"></span></span></li>
+                                    </ul>
+                                    <p class="lang-card__line lang-card__line--muted">// scan complete · 7 languages indexed</p>
+                                    <p class="lang-card__line"><span class="code--key">$</span> <span class="code--blink">█</span></p>
+                                </div>
+                            </div>
+
+                            <!-- 1 — STATS.bat -->
+                            <div class="lang-card term-card" data-idx="1">
+                                <div class="lang-card__header">
+                                    <span class="lang-card__dot"></span>
+                                    <span class="lang-card__dot"></span>
+                                    <span class="lang-card__dot"></span>
+                                    <span class="lang-card__title">STATS.bat</span>
+                                </div>
+                                <div class="lang-card__body">
+                                    <p class="lang-card__line"><span class="code--key">$</span> <span class="code--val">./fetch_lifetime_stats</span></p>
+                                    <p class="lang-card__line lang-card__line--muted">// pulling from the cave servers...</p>
+                                    <ul class="stat-list">
+                                        <li><span class="stat-list__icon">🎮</span><span class="stat-list__label">Hours Gamed</span><span class="stat-list__val">15,000+</span></li>
+                                        <li><span class="stat-list__icon">🎨</span><span class="stat-list__label">Projects Shipped</span><span class="stat-list__val">180+</span></li>
+                                        <li><span class="stat-list__icon">⏱️</span><span class="stat-list__label">Hours in Photoshop</span><span class="stat-list__val">12,000+</span></li>
+                                        <li><span class="stat-list__icon">🌙</span><span class="stat-list__label">All-Nighters Pulled</span><span class="stat-list__val">Lost Count</span></li>
+                                        <li><span class="stat-list__icon">😂</span><span class="stat-list__label">Dad Jokes Told</span><span class="stat-list__val">Countless</span></li>
+                                        <li><span class="stat-list__icon">🐛</span><span class="stat-list__label">Designs Trashed</span><span class="stat-list__val">9,000</span></li>
+                                        <li><span class="stat-list__icon">🦇</span><span class="stat-list__label">Times Watched The Batman</span><span class="stat-list__val">47</span></li>
+                                    </ul>
+                                    <p class="lang-card__line lang-card__line--muted">// some stats may be exaggerated for effect</p>
+                                    <p class="lang-card__line"><span class="code--key">$</span> <span class="code--blink">█</span></p>
+                                </div>
+                            </div>
+
+                            <!-- 2 — TOOLBOX.bat -->
+                            <div class="lang-card term-card" data-idx="2">
+                                <div class="lang-card__header">
+                                    <span class="lang-card__dot"></span>
+                                    <span class="lang-card__dot"></span>
+                                    <span class="lang-card__dot"></span>
+                                    <span class="lang-card__title">TOOLBOX.bat</span>
+                                </div>
+                                <div class="lang-card__body">
+                                    <p class="lang-card__line"><span class="code--key">$</span> <span class="code--val">./list_weapons</span></p>
+                                    <p class="lang-card__line lang-card__line--muted">// utility belt loaded</p>
+                                    <ul class="lang-list">
+                                        <li style="--p:95"><span class="lang-list__char tool-ic tool-ic--ps">Ps</span><span class="lang-list__name">Photoshop</span><span class="lang-list__bar"><span class="lang-list__fill"></span></span></li>
+                                        <li style="--p:92"><span class="lang-list__char tool-ic tool-ic--ai">Ai</span><span class="lang-list__name">Illustrator</span><span class="lang-list__bar"><span class="lang-list__fill"></span></span></li>
+                                        <li style="--p:88"><span class="lang-list__char tool-ic tool-ic--ae">Ae</span><span class="lang-list__name">After Effects</span><span class="lang-list__bar"><span class="lang-list__fill"></span></span></li>
+                                        <li style="--p:85"><span class="lang-list__char tool-ic tool-ic--pr">Pr</span><span class="lang-list__name">Premiere Pro</span><span class="lang-list__bar"><span class="lang-list__fill"></span></span></li>
+                                        <li style="--p:90"><span class="lang-list__char tool-ic tool-ic--fg">Fg</span><span class="lang-list__name">Figma</span><span class="lang-list__bar"><span class="lang-list__fill"></span></span></li>
+                                    </ul>
+                                    <p class="lang-card__line lang-card__line--muted">// 5 tools mounted · auto-update enabled</p>
+                                    <p class="lang-card__line"><span class="code--key">$</span> <span class="code--blink">█</span></p>
+                                </div>
+                            </div>
+
+                            <!-- 3 — NOW.bat -->
+                            <div class="lang-card term-card" data-idx="3">
+                                <div class="lang-card__header">
+                                    <span class="lang-card__dot"></span>
+                                    <span class="lang-card__dot"></span>
+                                    <span class="lang-card__dot"></span>
+                                    <span class="lang-card__title">NOW.bat</span>
+                                </div>
+                                <div class="lang-card__body">
+                                    <p class="lang-card__line"><span class="code--key">$</span> <span class="code--val">./status --live</span></p>
+                                    <p class="lang-card__line lang-card__line--muted">// realtime feed · last sync: just now</p>
+                                    <ul class="now-list">
+                                        <li><span class="now-list__key">working_on</span><span class="now-list__sep">::</span><span class="now-list__val">"this very portfolio"</span></li>
+                                        <li><span class="now-list__key">watching</span><span class="now-list__sep">::</span><span class="now-list__val">"The Batman (again)"</span></li>
+                                        <li><span class="now-list__key">listening</span><span class="now-list__sep">::</span><span class="now-list__val">"Hans Zimmer + lo-fi"</span></li>
+                                        <li><span class="now-list__key">reading</span><span class="now-list__sep">::</span><span class="now-list__val">"reddit at 2 a.m."</span></li>
+                                        <li><span class="now-list__key">obsessed_with</span><span class="now-list__sep">::</span><span class="now-list__val">"bold typography"</span></li>
+                                        <li><span class="now-list__key">location</span><span class="now-list__sep">::</span><span class="now-list__val">"Bangalore, IN"</span></li>
+                                        <li><span class="now-list__key">mood</span><span class="now-list__sep">::</span><span class="now-list__val now-list__val--accent">"chaotically creative"</span></li>
+                                        <li><span class="now-list__key">availability</span><span class="now-list__sep">::</span><span class="now-list__val now-list__val--ok">● open for work</span></li>
+                                    </ul>
+                                    <p class="lang-card__line lang-card__line--muted">// thanks for checking in</p>
+                                    <p class="lang-card__line"><span class="code--key">$</span> <span class="code--blink">█</span></p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Controls -->
+                    <div class="term-deck__controls">
+                        <button class="term-deck__arrow" data-dir="-1" type="button" aria-label="Previous">‹</button>
+                        <div class="term-deck__dots">
+                            <button class="term-deck__dot is-active" data-idx="0" type="button" aria-label="Card 1"></button>
+                            <button class="term-deck__dot" data-idx="1" type="button" aria-label="Card 2"></button>
+                            <button class="term-deck__dot" data-idx="2" type="button" aria-label="Card 3"></button>
+                            <button class="term-deck__dot" data-idx="3" type="button" aria-label="Card 4"></button>
+                        </div>
+                        <button class="term-deck__arrow" data-dir="1" type="button" aria-label="Next">›</button>
+                    </div>
+                    <p class="term-deck__hint">← swipe or use arrows →</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ EXPERIENCE ============ -->
+    <section id="experience" class="section section--cave">
+        <div class="xp__content">
+            <span class="section__label">// EXPERIENCE</span>
+            <h2 class="xp__title">WHERE I <span class="text--yellow">FARMED XP</span></h2>
+            <div class="xp__timeline">
+                <div class="xp__entry" data-year="2022">
+                    <div class="xp__marker"></div>
+                    <div class="xp__info">
+                        <h3 class="xp__company">Trade Brains</h3>
+                        <p class="xp__role">Graphic Design Intern</p>
+                        <p class="xp__date">Mar – Jun 2022</p>
+                        <p class="xp__desc">Started as a novice intern. Not knowing about any software or the basics of design. Ended the internship as a fast learner with dominating designs.</p>
+                    </div>
+                </div>
+                <div class="xp__entry" data-year="2022-23">
+                    <div class="xp__marker"></div>
+                    <div class="xp__info">
+                        <h3 class="xp__company">Trade Brains</h3>
+                        <p class="xp__role">Jr. Graphic Designer</p>
+                        <p class="xp__date">Jun 2022 – May 2023</p>
+                        <p class="xp__desc">Leveled up with a knack for marketing ideas. Became the one with new ideas for UI/UX, Posts & topics.</p>
+                    </div>
+                </div>
+                <div class="xp__entry" data-year="2023+">
+                    <div class="xp__marker"></div>
+                    <div class="xp__info">
+                        <h3 class="xp__company">Monk Mantra</h3>
+                        <p class="xp__role">Graphic Designer</p>
+                        <p class="xp__date">Jun 2023 – Present</p>
+                        <p class="xp__desc">Easy to communicate in different languages. Kept growing ever since...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ SKILLS ============ -->
+    <section id="skills" class="section section--dark">
+        <div class="skills__content">
+            <span class="section__label">// SKILL TREE</span>
+            <h2 class="skills__title">WHAT I <span class="text--yellow">CAN DO</span></h2>
+            <p class="skills__intro"><em>Other than protect the</em> <strong>streets of Gotham</strong></p>
+            <div class="skills__grid">
+                <div class="skill-card" style="--lvl:95">
+                    <div class="skill-card__head">
+                        <span class="skill-card__num">01</span>
+                        <span class="skill-card__lvl">LVL <strong>95</strong></span>
+                    </div>
+                    <div class="skill-card__icon">🎨</div>
+                    <h3 class="skill-card__title">BRAND IDENTITY <span>& LOGO DESIGN</span></h3>
+                    <p class="skill-card__sub">Because Every Hero Needs A Symbol.</p>
+                    <ul class="skill-card__tags"><li>Logos</li><li>Wordmarks</li><li>Style Guides</li></ul>
+                    <div class="skill-card__bar"><div class="skill-card__fill"></div></div>
+                </div>
+                <div class="skill-card" style="--lvl:90">
+                    <div class="skill-card__head">
+                        <span class="skill-card__num">02</span>
+                        <span class="skill-card__lvl">LVL <strong>90</strong></span>
+                    </div>
+                    <div class="skill-card__icon">📰</div>
+                    <h3 class="skill-card__title">SOCIAL MEDIA <span>POSTS & ADS</span></h3>
+                    <p class="skill-card__sub">Visually pleasing content that converts.</p>
+                    <ul class="skill-card__tags"><li>Carousels</li><li>Reels Covers</li><li>Story Sets</li></ul>
+                    <div class="skill-card__bar"><div class="skill-card__fill"></div></div>
+                </div>
+                <div class="skill-card" style="--lvl:88">
+                    <div class="skill-card__head">
+                        <span class="skill-card__num">03</span>
+                        <span class="skill-card__lvl">LVL <strong>88</strong></span>
+                    </div>
+                    <div class="skill-card__icon">📊</div>
+                    <h3 class="skill-card__title">INFOGRAPHICS <span>& DATA VIZ</span></h3>
+                    <p class="skill-card__sub">Clarifying complex data through impact.</p>
+                    <ul class="skill-card__tags"><li>Stats</li><li>Storytelling</li><li>Charts</li></ul>
+                    <div class="skill-card__bar"><div class="skill-card__fill"></div></div>
+                </div>
+                <div class="skill-card" style="--lvl:85">
+                    <div class="skill-card__head">
+                        <span class="skill-card__num">04</span>
+                        <span class="skill-card__lvl">LVL <strong>85</strong></span>
+                    </div>
+                    <div class="skill-card__icon">🎬</div>
+                    <h3 class="skill-card__title">MOTION GRAPHICS <span>& VIDEO</span></h3>
+                    <p class="skill-card__sub">Bringing your hero's moves to life.</p>
+                    <ul class="skill-card__tags"><li>Reels</li><li>Promos</li><li>Edits</li></ul>
+                    <div class="skill-card__bar"><div class="skill-card__fill"></div></div>
+                </div>
+                <div class="skill-card" style="--lvl:82">
+                    <div class="skill-card__head">
+                        <span class="skill-card__num">05</span>
+                        <span class="skill-card__lvl">LVL <strong>82</strong></span>
+                    </div>
+                    <div class="skill-card__icon">🖨️</div>
+                    <h3 class="skill-card__title">PRINT DESIGN <span>& COLLATERAL</span></h3>
+                    <p class="skill-card__sub">Your hero's toolkit for the real world.</p>
+                    <ul class="skill-card__tags"><li>Menus</li><li>Standees</li><li>Pamphlets</li></ul>
+                    <div class="skill-card__bar"><div class="skill-card__fill"></div></div>
+                </div>
+                <div class="skill-card" style="--lvl:100">
+                    <div class="skill-card__head">
+                        <span class="skill-card__num">06</span>
+                        <span class="skill-card__lvl">LVL <strong>100</strong></span>
+                    </div>
+                    <div class="skill-card__icon">😂</div>
+                    <h3 class="skill-card__title">MAKING YOU <span>LAUGH</span></h3>
+                    <p class="skill-card__sub">Seriously. I'm seriously funny.</p>
+                    <ul class="skill-card__tags"><li>Dad jokes</li><li>Memes</li><li>Vibes</li></ul>
+                    <div class="skill-card__bar"><div class="skill-card__fill"></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ WORK / CASE FILES ============ -->
+    <section id="work" class="section section--work">
+        <div class="work__content">
+            <span class="section__label">// CASE FILES</span>
+            <h2 class="work__title split-text"><span>THE</span> <span class="text--yellow">EVIDENCE</span></h2>
+            <p class="work__sub">Receipts. Pixels. Proof.</p>
+
+            <!-- Stats counter strip -->
+            <div class="work__stats">
+                <div class="work__stat"><span class="work__stat-num" data-count="180">0</span><span class="work__stat-label">PROJECTS</span></div>
+                <div class="work__stat"><span class="work__stat-num" data-count="4">0</span><span class="work__stat-label">YEARS</span></div>
+                <div class="work__stat"><span class="work__stat-num" data-count="0">0</span><span class="work__stat-label">% CAFFEINE</span></div>
+            </div>
+
+            <!-- Featured spotlight -->
+            <div class="work__featured">
+                <div class="work__featured-tag">★ FEATURED CASE</div>
+                <div class="work__featured-grid">
+                    <div class="work__featured-img"
+                         data-tilt
+                         data-src="portfolio-images/things-i-do-for-fun/vader%20wallpaper.webp"
+                         data-title="Darth Vader"
+                         data-tag="PERSONAL"
+                         data-desc="A moody Sith Lord poster — heavy contrast, atmospheric reds, and brooding negative space. Done purely for the love of the craft.">
+                        <img src="portfolio-images/things-i-do-for-fun/vader%20wallpaper.webp" alt="Darth Vader Poster" loading="eager" fetchpriority="high" decoding="async">
+                        <span class="work__featured-badge">SIGNATURE</span>
+                    </div>
+                    <div class="work__featured-info">
+                        <p class="work__featured-kicker">// 001 — PERSONAL</p>
+                        <h3 class="work__featured-title">DARTH <span class="text--stroke">VADER</span></h3>
+                        <p class="work__featured-desc">A moody Sith Lord poster — heavy contrast, atmospheric reds, and brooding negative space. Done purely for the love of the craft.</p>
+                        <div class="work__featured-meta">
+                            <span>POSTER · DIGITAL ILLUSTRATION · TYPE</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter tabs -->
+            <div class="work__filters">
+                <button class="work__filter active" data-filter="all">ALL</button>
+                <button class="work__filter" data-filter="post">POST COVERS</button>
+                <button class="work__filter" data-filter="infographic">INFOGRAPHIC</button>
+                <button class="work__filter" data-filter="ad">ADS</button>
+                <button class="work__filter" data-filter="case">CASE STUDIES</button>
+                <button class="work__filter" data-filter="print">PRINT</button>
+                <button class="work__filter" data-filter="personal">PERSONAL</button>
+            </div>
+
+            <div class="work__grid">
+                <!-- PERSONAL -->
+                <div class="work__item" data-category="personal" data-tilt
+                     data-title="Batman Ninja" data-tag="PERSONAL"
+                     data-desc="Samurai-era reinterpretation of the Dark Knight.">
+                    <img data-src="portfolio-images/things-i-do-for-fun/batman%20ninja.webp" alt="Batman Ninja">
+                </div>
+                <div class="work__item" data-category="personal" data-tilt
+                     data-title="Bat Signal" data-tag="PERSONAL"
+                     data-desc="The signal cutting through Gotham smog.">
+                    <img data-src="portfolio-images/things-i-do-for-fun/batsignal-01-01-01.webp" alt="Bat Signal">
+                </div>
+                <div class="work__item" data-category="personal" data-tilt
+                     data-title="Iron Man" data-tag="PERSONAL"
+                     data-desc="Tony's arc reactor turned into a focal glow — minimal palette, maximum drama.">
+                    <img data-src="portfolio-images/things-i-do-for-fun/ironman.webp" alt="Iron Man" decoding="async">
+                </div>
+                <div class="work__item" data-category="personal" data-tilt
+                     data-title="Spider-Man Wallpaper" data-tag="PERSONAL"
+                     data-desc="Friendly neighbourhood wallpaper — webs, contrast, and a touch of comic-book grit.">
+                    <img data-src="portfolio-images/things-i-do-for-fun/spooderman%20wallpaper.webp" alt="Spider-Man" decoding="async">
+                </div>
+                <div class="work__item" data-category="personal" data-tilt
+                     data-title="Vader Wallpaper" data-tag="PERSONAL"
+                     data-desc="Vader's helmet rendered against deep crimson — a phone-shaped love letter to the dark side.">
+                    <img data-src="portfolio-images/things-i-do-for-fun/vader%20wallpaper.webp" alt="Vader Wallpaper" decoding="async">
+                </div>
+                <div class="work__item" data-category="personal" data-tilt
+                     data-title="Batman Mood" data-tag="PERSONAL"
+                     data-desc="A close-up cowl study — exploring fabric texture, eye-light, and that signature Gotham tension.">
+                    <img data-src="portfolio-images/things-i-do-for-fun/batman.webp" alt="Batman" decoding="async">
+                </div>
+                <div class="work__item" data-category="personal" data-tilt
+                     data-title="Neon Samurai" data-tag="PERSONAL"
+                     data-desc="Exploring futuristic color palettes and traditional iconography.">
+                    <img data-src="portfolio-images/things-i-do-for-fun/DESIGN-01.webp" alt="Neon Samurai">
+                </div>
+                <div class="work__item" data-category="personal" data-tilt
+                     data-title="On The Edge" data-tag="PERSONAL"
+                     data-desc="Kinetic typography and perspective study.">
+                    <img data-src="portfolio-images/things-i-do-for-fun/one%20the%20edge-01.webp" alt="On The Edge">
+                </div>
+                <div class="work__item" data-category="personal" data-tilt
+                     data-title="Spider-Man" data-tag="PERSONAL"
+                     data-desc="Brooding comic-book aesthetic wallpaper.">
+                    <img data-src="portfolio-images/things-i-do-for-fun/spooderman%20wallpaper.webp" alt="Spiderman">
+                </div>
+
+                <!-- POST COVERS -->
+                <div class="work__item work__item--tall" data-category="post" data-tilt
+                     data-title="Cadbury's India" data-tag="POST COVER"
+                     data-desc="A cover unpacking how a British chocolate brand became a part of every Indian festival — paired with a colour story straight out of the wrapper.">
+                    <img data-src="portfolio-images/post-covers/cadburys.webp" alt="Cadbury" decoding="async">
+                </div>
+                <div class="work__item" data-category="post" data-tilt
+                     data-title="Louis Vuitton" data-tag="POST COVER"
+                     data-desc="Cover for a deep dive on LV's empire — luxury cues with a moody editorial twist.">
+                    <img data-src="portfolio-images/post-covers/lv.webp" alt="Louis Vuitton" decoding="async">
+                </div>
+                <div class="work__item" data-category="post" data-tilt
+                     data-title="Nike Case Study" data-tag="POST COVER"
+                     data-desc="Tribute cover to one of the loudest brand stories in marketing history — clean type, sport energy.">
+                    <img data-src="portfolio-images/post-covers/nike.webp" alt="Nike" decoding="async">
+                </div>
+                <div class="work__item" data-category="post" data-tilt
+                     data-title="Rise of Tanishq" data-tag="POST COVER"
+                     data-desc="A jewellery-inspired cover treatment — gold accents, regal type, a bit of nostalgia.">
+                    <img data-src="portfolio-images/post-covers/tanishq.webp" alt="Tanishq" decoding="async">
+                </div>
+                <div class="work__item" data-category="post" data-tilt
+                     data-title="Fogg" data-tag="POST COVER"
+                     data-desc="Cover exploring the rise of a no-gas deodorant — minimal aesthetic, punchy headline.">
+                    <img data-src="portfolio-images/post-covers/fogg.webp" alt="Fogg" decoding="async">
+                </div>
+                <div class="work__item" data-category="post" data-tilt
+                     data-title="Pizza Wars" data-tag="POST COVER"
+                     data-desc="A flavourful cover on the QSR slugfest — a cheesy, ultra-saturated invitation to read on.">
+                    <img data-src="portfolio-images/post-covers/pizza.webp" alt="Pizza Wars" decoding="async">
+                </div>
+                <div class="work__item" data-category="post" data-tilt
+                     data-title="FIFA World Cup" data-tag="POST COVER"
+                     data-desc="Cover for the world's biggest tournament — gold trophy, global stakes, big type energy.">
+                    <img data-src="portfolio-images/post-covers/fifa%20world%20cup.webp" alt="FIFA" decoding="async">
+                </div>
+                <div class="work__item" data-category="post" data-tilt
+                     data-title="Made in India" data-tag="POST COVER"
+                     data-desc="A patriotic cover on homegrown brands rewriting the story of Indian manufacturing.">
+                    <img data-src="portfolio-images/post-covers/made%20in%20india.webp" alt="Made in India" decoding="async">
+                </div>
+                <div class="work__item" data-category="post" data-tilt
+                     data-title="Indian Currency" data-tag="POST COVER"
+                     data-desc="Cover unpacking the design history and economics of the rupee — paper, security threads, the works.">
+                    <img data-src="portfolio-images/post-covers/indian%20currency.webp" alt="Indian Currency" decoding="async">
+                </div>
+                <div class="work__item" data-category="post" data-tilt
+                     data-title="Swiss Banks" data-tag="POST COVER"
+                     data-desc="A noir-tinted cover on the world's most secretive vaults. Heavy contrast, locked-down typography.">
+                    <img data-src="portfolio-images/post-covers/swiss%20bank.webp" alt="Swiss Bank" decoding="async">
+                </div>
+                <div class="work__item" data-category="post" data-tilt
+                     data-title="Smuggle Coin" data-tag="POST COVER"
+                     data-desc="A grungy cover for a story on illicit money flow — torn paper, blacked-out elements.">
+                    <img data-src="portfolio-images/post-covers/smuggle%20coin.webp" alt="Smuggle Coin" decoding="async">
+                </div>
+                <div class="work__item" data-category="post" data-tilt
+                     data-title="The Layoffs Story" data-tag="POST COVER"
+                     data-desc="A cover capturing the post-pandemic tech shake-up. Sharp angles, cold tones, brutal honesty.">
+                    <img data-src="portfolio-images/post-covers/layoffs.webp" alt="Layoffs" decoding="async">
+                </div>
+                <div class="work__item" data-category="post" data-tilt
+                     data-title="No Claim Bonus" data-tag="POST COVER"
+                     data-desc="Cover demystifying insurance jargon for the everyday reader — friendly icons, clear hierarchy.">
+                    <img data-src="portfolio-images/post-covers/no%20claim%20bonus-01.webp" alt="No Claim Bonus" decoding="async">
+                </div>
+                <div class="work__item" data-category="post" data-tilt
+                     data-title="On The Edge" data-tag="POST COVER"
+                     data-desc="Edgy editorial cover — playing with cropping, kinetic type, and a vertigo-style illustration.">
+                    <img data-src="portfolio-images/post-covers/coaching%20centre.webp" alt="Coaching Centre" decoding="async">
+                </div>
+                <div class="work__item" data-category="post" data-tilt
+                     data-title="China Story" data-tag="POST COVER"
+                     data-desc="A cover on a global power's rise and the design language that travels with it. Bold reds, kinetic type.">
+                    <img data-src="portfolio-images/post-covers/china%20ss.webp" alt="China" decoding="async">
+                </div>
+                <div class="work__item" data-category="post" data-tilt
+                     data-title="Europe Drug Trade" data-tag="POST COVER"
+                     data-desc="A cover for a heavy investigative piece — earthy palette, distressed textures.">
+                    <img data-src="portfolio-images/post-covers/europe%20drugs.webp" alt="Europe Drugs" decoding="async">
+                </div>
+                <div class="work__item" data-category="post" data-tilt
+                     data-title="The Beggar Economy" data-tag="POST COVER"
+                     data-desc="An unflinching cover examining urban poverty — quiet typography, a single arresting image.">
+                    <img data-src="portfolio-images/post-covers/beggars.webp" alt="Beggars" decoding="async">
+                </div>
+                <div class="work__item" data-category="post" data-tilt
+                     data-title="Highway" data-tag="POST COVER"
+                     data-desc="Cover for a story on India's road network — long-shot perspective, kinetic motion lines.">
+                    <img data-src="portfolio-images/post-covers/highway.webp" alt="Highway" decoding="async">
+                </div>
+                <div class="work__item" data-category="post" data-tilt
+                     data-title="Jasmine Oil" data-tag="POST COVER"
+                     data-desc="Aromatic cover for a niche beauty story — soft gradients, delicate type.">
+                    <img data-src="portfolio-images/post-covers/jasmine%20oil.webp" alt="Jasmine Oil" decoding="async">
+                </div>
+                <div class="work__item" data-category="post" data-tilt
+                     data-title="Coaching Centre" data-tag="POST COVER"
+                     data-desc="Cover on India's exam-prep boom — desk-lamp lighting, papers, late-night vibes.">
+                    <img data-src="portfolio-images/post-covers/coaching%20centre.webp" alt="Coaching Centre" decoding="async">
+                </div>
+                <div class="work__item" data-category="post" data-tilt
+                     data-title="Venezuela" data-tag="POST COVER"
+                     data-desc="A cover documenting a country in crisis — desaturated tones, urgent typography.">
+                    <img data-src="portfolio-images/post-covers/VENEZUELAS.webp" alt="Venezuela" decoding="async">
+                </div>
+                <div class="work__item" data-category="post" data-tilt
+                     data-title="Pelé Tribute" data-tag="POST COVER"
+                     data-desc="A reverent farewell cover — gold tones, a silhouette, and one number: 10.">
+                    <img data-src="portfolio-images/post-covers/pele.webp" alt="Pelé" decoding="async">
+                </div>
+                <div class="work__item" data-category="post" data-tilt
+                     data-title="Dark Santa" data-tag="POST COVER"
+                     data-desc="A holiday-with-an-edge cover — Santa, but make it Gotham.">
+                    <img data-src="portfolio-images/post-covers/santa.webp" alt="Santa" decoding="async">
+                </div>
+                <div class="work__item" data-category="post" data-tilt
+                     data-title="Airbnb" data-tag="POST COVER"
+                     data-desc="Cover for a story on the rental giant disrupting hospitality — warm coral palette, travel cues.">
+                    <img data-src="portfolio-images/post-covers/airbnb.webp" alt="Airbnb" decoding="async">
+                </div>
+                <div class="work__item" data-category="post" data-tilt
+                     data-title="Fevicol" data-tag="POST COVER"
+                     data-desc="Cover for one of India's most beloved ad legacies — playful, sticky, unmistakably Fevicol.">
+                    <img data-src="portfolio-images/post-covers/fevicol.webp" alt="Fevicol" decoding="async">
+                </div>
+                <div class="work__item" data-category="post" data-tilt
+                     data-title="Sri Chakra Tyres" data-tag="POST COVER"
+                     data-desc="A grippy editorial cover for a tyre-industry deep dive — circular motifs, bold type.">
+                    <img data-src="portfolio-images/post-covers/sri%20chakra%20tyres.webp" alt="Sri Chakra Tyres" decoding="async">
+                </div>
+                <div class="work__item" data-category="post" data-tilt
+                     data-title="Tata Communications" data-tag="POST COVER"
+                     data-desc="A corporate-flavoured cover with a confident grid, brand-blue gradients, and clean iconography.">
+                    <img data-src="portfolio-images/post-covers/tata%20communications.webp" alt="Tata Communications" decoding="async">
+                </div>
+                <div class="work__item" data-category="post" data-tilt
+                     data-title="Kyra" data-tag="POST COVER"
+                     data-desc="A softer, dreamier post cover — pastel palette, hand-drawn flourishes.">
+                    <img data-src="portfolio-images/post-covers/kyra.webp" alt="Kyra" decoding="async">
+                </div>
+                <div class="work__item" data-category="post" data-tilt
+                     data-title="K — Mark" data-tag="POST COVER"
+                     data-desc="A type-led cover playing with a single letterform — geometry, weight, attitude.">
+                    <img data-src="portfolio-images/post-covers/k.webp" alt="K" decoding="async">
+                </div>
+                <div class="work__item" data-category="post" data-tilt
+                     data-title="Syira Set" data-tag="POST COVER"
+                     data-desc="A cover set for a beauty brand — feminine palette, soft light, considered spacing.">
+                    <img data-src="portfolio-images/post-covers/syira%20stuuf.webp" alt="Syira" decoding="async">
+                </div>
+
+                <!-- INFOGRAPHIC -->
+                <div class="work__item" data-category="infographic" data-tilt
+                     data-title="EV vs Petrol" data-tag="INFOGRAPHIC"
+                     data-desc="A side-by-side breakdown of cost, range, and footprint between electric and combustion — translating spreadsheets into a one-glance story.">
+                    <img data-src="portfolio-images/infograph/ev%20vs%20petrol.webp" alt="EV vs Petrol" decoding="async">
+                </div>
+                <div class="work__item" data-category="infographic" data-tilt
+                     data-title="Overvalued" data-tag="INFOGRAPHIC"
+                     data-desc="A graphic essay on bubbles, valuations, and where the music stops — charts as the lead actor.">
+                    <img data-src="portfolio-images/infograph/overvalued.webp" alt="Overvalued" decoding="async">
+                </div>
+                <div class="work__item" data-category="infographic" data-tilt
+                     data-title="SEO-Optimized Content" data-tag="INFOGRAPHIC"
+                     data-desc="A how-to laid out as a flow — icons, tight copy, and a clean information rhythm.">
+                    <img data-src="portfolio-images/infograph/how%20to%20create%20seo%20optimized%20content.webp" alt="SEO Content" decoding="async">
+                </div>
+
+                <!-- ADS -->
+                <div class="work__item work__item--wide" data-category="ad" data-tilt
+                     data-title="Google Ads Set" data-tag="AD"
+                     data-desc="A set of performance-driven Google Ads creatives — punchy headlines, sharp CTAs, designed for the click.">
+                    <img data-src="portfolio-images/ads/Monk%20Mantra%20Ad%20(12).webp" alt="Google Ads" decoding="async">
+                </div>
+                <div class="work__item" data-category="ad" data-tilt
+                     data-title="Ad — 01" data-tag="AD"
+                     data-desc="A scroll-stopping social ad — confident type, single product hero, one clear message.">
+                    <img data-src="portfolio-images/ads/unposted%20letters%20ad.webp" alt="Ad 1" decoding="async">
+                </div>
+                <div class="work__item" data-category="ad" data-tilt
+                     data-title="Ad — 02" data-tag="AD"
+                     data-desc="Variant explorations — same brief, different mood. Designed to A/B test against the original.">
+                    <img data-src="portfolio-images/ads/unposted%20letters%20ad%20(2).webp" alt="Ad 2" decoding="async">
+                </div>
+                <div class="work__item" data-category="ad" data-tilt
+                     data-title="Ad — 03" data-tag="AD"
+                     data-desc="A bolder cut — louder typography, tighter focus, built to win attention in the feed.">
+                    <img data-src="portfolio-images/ads/unposted%20letters%20ad%20(3).webp" alt="Ad 3" decoding="async">
+                </div>
+                <div class="work__item" data-category="ad" data-tilt
+                     data-title="Creative — 02" data-tag="AD"
+                     data-desc="Static creative for a paid campaign — clean grid, value-prop forward.">
+                    <img data-src="portfolio-images/ads/unposted%20letters%20ad%20(4).webp" alt="Ad" decoding="async">
+                </div>
+                <div class="work__item" data-category="ad" data-tilt
+                     data-title="Creative — 03" data-tag="AD"
+                     data-desc="A higher-contrast variant — pushing the eye to the offer in under a second.">
+                    <img data-src="portfolio-images/ads/unposted%20letters%20ad%20(5).webp" alt="Ad" decoding="async">
+                </div>
+                <div class="work__item" data-category="ad" data-tilt
+                     data-title="Ad Pack" data-tag="AD"
+                     data-desc="A starter pack of static ad concepts — designed to plug into any campaign cycle.">
+                    <img data-src="portfolio-images/ads/Trade%20brains%20portal%20AD.webp" alt="Ad Pack" decoding="async">
+                </div>
+                <div class="work__item" data-category="ad" data-tilt
+                     data-title="Promo Story" data-tag="AD"
+                     data-desc="An all-in-one promotion story for a giveaway-led IG campaign — bright, urgent, conversion-led.">
+                    <img data-src="portfolio-images/ads/Trade%20brains%20portal%20Story%20ad.webp" alt="Promotion Story" decoding="async">
+                </div>
+                <div class="work__item" data-category="ad" data-tilt
+                     data-title="Giveaway" data-tag="AD"
+                     data-desc="A giveaway creative built to drive saves, shares, and tags — playful but clear.">
+                    <img data-src="portfolio-images/ads/EzyHelpers%20Ad.webp" alt="Giveaway" decoding="async">
+                </div>
+                <div class="work__item" data-category="ad" data-tilt
+                     data-title="Facebook vs Google" data-tag="AD"
+                     data-desc="A comparison ad explaining where to put paid spend — designed to feel native to feed.">
+                    <img data-src="portfolio-images/ads/facebook%20vs%20google%20ads.webp" alt="FB vs Google" decoding="async">
+                </div>
+                <div class="work__item" data-category="ad" data-tilt
+                     data-title="GMB Listing" data-tag="AD"
+                     data-desc="Local-first creative driving Google My Business clicks — local cues, location pin, social proof.">
+                    <img data-src="portfolio-images/ads/facebook%20vs%20google%20ads.webp" alt="GMB" decoding="async">
+                </div>
+                <div class="work__item" data-category="ad" data-tilt
+                     data-title="Working Mom Struggles" data-tag="AD"
+                     data-desc="Audience-targeted creative speaking directly to working moms — empathetic copy, relatable visuals.">
+                    <img data-src="portfolio-images/ads/Ezyhelpers%20Mothers%20day%20ad.webp" alt="Working Mom" decoding="async">
+                </div>
+                <div class="work__item" data-category="ad" data-tilt
+                     data-title="Ads — Set" data-tag="AD"
+                     data-desc="A consolidated ad set across the funnel — awareness, consideration, conversion.">
+                    <img data-src="portfolio-images/ads/Physio%20at%20your%20door%20step%20ad.webp" alt="Ads" decoding="async">
+                </div>
+                <div class="work__item" data-category="ad" data-tilt
+                     data-title="Carousel — 01" data-tag="SOCIAL"
+                     data-desc="Slide one of an Instagram carousel — designed to earn the swipe with strong contrast and a clear hook.">
+                    <img data-src="portfolio-images/ads/unposted%20letters%20ad%20(6).webp" alt="Carousel 1" decoding="async">
+                </div>
+                <div class="work__item" data-category="ad" data-tilt
+                     data-title="Carousel — 02" data-tag="SOCIAL"
+                     data-desc="A bridge slide — keeps the rhythm and adds the next layer of insight.">
+                    <img data-src="portfolio-images/ads/unposted%20letters%20ad%20(7).webp" alt="Carousel 2" decoding="async">
+                </div>
+                <div class="work__item" data-category="ad" data-tilt
+                     data-title="Carousel — 03" data-tag="SOCIAL"
+                     data-desc="Visual proof slide — charts and pull-quotes that drive the central idea home.">
+                    <img data-src="portfolio-images/ads/unposted%20letters%20ad%20(8).webp" alt="Carousel 3" decoding="async">
+                </div>
+                <div class="work__item" data-category="ad" data-tilt
+                     data-title="Carousel — 04" data-tag="SOCIAL"
+                     data-desc="The mid-thread punchline — designed to be the slide screenshot-ed and shared.">
+                    <img data-src="portfolio-images/ads/unposted%20letters%20ad%20(9).webp" alt="Carousel 4" decoding="async">
+                </div>
+                <div class="work__item" data-category="ad" data-tilt
+                     data-title="Carousel — 05" data-tag="SOCIAL"
+                     data-desc="The wrap-up slide with a clear CTA — closing the carousel with intention.">
+                    <img data-src="portfolio-images/ads/unposted%20letters%20ad.webp" alt="Carousel 5" decoding="async">
+                </div>
+                <div class="work__item" data-category="ad" data-tilt
+                     data-title="Monk Mantra — 01" data-tag="SOCIAL"
+                     data-desc="The opening creative for a long-running brand campaign at Monk Mantra — sets the visual system.">
+                    <img data-src="portfolio-images/ads/Monk%20Mantra%20Ad%20(3).webp" alt="MM 1" decoding="async">
+                </div>
+                <div class="work__item" data-category="ad" data-tilt
+                     data-title="Monk Mantra — 02" data-tag="SOCIAL"
+                     data-desc="A service-focused post — uses the brand grid and accent colour to anchor the message.">
+                    <img data-src="portfolio-images/ads/Monk%20Mantra%20Ad%20(4).webp" alt="MM 2" decoding="async">
+                </div>
+                <div class="work__item" data-category="ad" data-tilt
+                     data-title="Monk Mantra — 03" data-tag="SOCIAL"
+                     data-desc="A testimonial-led post — quote-mark forward, designed to build trust quickly.">
+                    <img data-src="portfolio-images/ads/Monk%20Mantra%20Ad%20(5).webp" alt="MM 3" decoding="async">
+                </div>
+                <div class="work__item" data-category="ad" data-tilt
+                     data-title="Monk Mantra — 04" data-tag="SOCIAL"
+                     data-desc="An offer creative — strong number, urgent CTA, on-brand.">
+                    <img data-src="portfolio-images/ads/Monk%20Mantra%20Ad%20(6).webp" alt="MM 4" decoding="async">
+                </div>
+                <div class="work__item" data-category="ad" data-tilt
+                     data-title="Monk Mantra — 05" data-tag="SOCIAL"
+                     data-desc="An info-led post — bullet structure, clean visuals, easy to skim.">
+                    <img data-src="portfolio-images/ads/Monk%20Mantra%20Ad%20(7).webp" alt="MM 5" decoding="async">
+                </div>
+                <div class="work__item" data-category="ad" data-tilt
+                     data-title="Monk Mantra — 06" data-tag="SOCIAL"
+                     data-desc="A founder-quote post — typographic, restrained, intentionally minimal.">
+                    <img data-src="portfolio-images/ads/Monk%20Mantra%20Ad%20(8).webp" alt="MM 6" decoding="async">
+                </div>
+                <div class="work__item" data-category="ad" data-tilt
+                     data-title="Monk Mantra — 07" data-tag="SOCIAL"
+                     data-desc="A campaign closer — strong recap visual, repeatable layout for future series.">
+                    <img data-src="portfolio-images/ads/Monk%20Mantra%20Ad%20(9).webp" alt="MM 7" decoding="async">
+                </div>
+                <div class="work__item" data-category="ad" data-tilt
+                     data-title="Monk Mantra — 08" data-tag="SOCIAL"
+                     data-desc="A reusable system slide — designed so the team can plug in copy and ship without me in the loop.">
+                    <img data-src="portfolio-images/ads/Monk%20Mantra%20Ad%20(10).webp" alt="MM 8" decoding="async">
+                </div>
+                <div class="work__item" data-category="ad" data-tilt
+                     data-title="MM Ad" data-tag="SOCIAL"
+                     data-desc="A paid social variant for Monk Mantra — heavier hierarchy, sharper offer.">
+                    <img data-src="portfolio-images/ads/Monk%20Mantra%20Ad%20(2).webp" alt="MM Ad" decoding="async">
+                </div>
+                <div class="work__item" data-category="ad" data-tilt
+                     data-title="MM Banner" data-tag="SOCIAL"
+                     data-desc="A web banner cut — wide format, strong left-side narrative, CTA pinned right.">
+                    <img data-src="portfolio-images/ads/Monk%20Mantra%20Banner.webp" alt="MM Banner" decoding="async">
+                </div>
+                <div class="work__item" data-category="ad" data-tilt
+                     data-title="Digital Marketing" data-tag="SOCIAL"
+                     data-desc="An educational social tile on digital marketing fundamentals — friendly icons, big takeaways.">
+                    <img data-src="portfolio-images/ads/Trade%20Brains%20Fingrad%20ad.webp" alt="Digital Marketing" decoding="async">
+                </div>
+                <div class="work__item" data-category="ad" data-tilt
+                     data-title="Digital Marketing — II" data-tag="SOCIAL"
+                     data-desc="A follow-up tile — same system, different message. Designed to build a recognisable series.">
+                    <img data-src="portfolio-images/ads/Trade%20Brains%20Fingrad%20ad%20(2).webp" alt="Digital Marketing 2" decoding="async">
+                </div>
+
+                <!-- CASE STUDIES -->
+                <div class="work__item work__item--tall" data-category="case" data-tilt
+                     data-title="Fevicol — Case Study I" data-tag="CASE STUDY"
+                     data-desc="A creative case study reimagining a Fevicol moment — leaning into the brand's iconic stickiness with a fresh visual punchline.">
+                    <img data-src="portfolio-images/case-study/fevicol%20ad.webp" alt="Fevicol Case Study" decoding="async">
+                </div>
+                <div class="work__item" data-category="case" data-tilt
+                     data-title="Fevicol — Case Study II" data-tag="CASE STUDY"
+                     data-desc="Variant exploration on the same brief — different scene, same Fevicol DNA.">
+                    <img data-src="portfolio-images/case-study/fevicol%20ad%20(2).webp" alt="Fevicol II" decoding="async">
+                </div>
+                <div class="work__item" data-category="case" data-tilt
+                     data-title="Fevicol — Case Study III" data-tag="CASE STUDY"
+                     data-desc="A third take — pushing the absurdist humour the brand is famous for, with a tighter visual lockup.">
+                    <img data-src="portfolio-images/case-study/fevicol%20ad%20(3).webp" alt="Fevicol III" decoding="async">
+                </div>
+                <div class="work__item" data-category="case" data-tilt
+                     data-title="Unacademy — Spec Ad" data-tag="CASE STUDY"
+                     data-desc="A self-initiated rebrand-style ad for Unacademy — focusing on the learner's transformation arc.">
+                    <img data-src="portfolio-images/case-study/uncademy%20ad.webp" alt="Unacademy" decoding="async">
+                </div>
+                <div class="work__item" data-category="case" data-tilt
+                     data-title="Schbang Assignment" data-tag="CASE STUDY"
+                     data-desc="A campaign concept built for a Schbang creative assignment — full system, hero visual, and supporting collateral.">
+                    <img data-src="portfolio-images/case-study/Schbang%20Assignment-06-10.webp" alt="Schbang" decoding="async">
+                </div>
+
+                <!-- PRINT -->
+                <div class="work__item" data-category="print" data-tilt
+                     data-title="Menu Card — 01" data-tag="PRINT"
+                     data-desc="A restaurant menu card cover — leaning into appetite-driving textures and a clear category hierarchy.">
+                    <img data-src="portfolio-images/print/SSEK%20Menu%20Card.webp" alt="Menu Card 01" decoding="async">
+                </div>
+                <div class="work__item" data-category="print" data-tilt
+                     data-title="Menu Card — 02" data-tag="PRINT"
+                     data-desc="Inner spread — designed for fast scanning with type sized for low-light tables.">
+                    <img data-src="portfolio-images/print/SSEK%20Menu%20Card%20(2).webp" alt="Menu Card 02" decoding="async">
+                </div>
+                <div class="work__item" data-category="print" data-tilt
+                     data-title="Menu Card — 03" data-tag="PRINT"
+                     data-desc="The closing spread — drinks, desserts, and a clear value-driving callout.">
+                    <img data-src="portfolio-images/print/SSEK%20Menu%20Card%20(3).webp" alt="Menu Card 03" decoding="async">
+                </div>
+                <div class="work__item" data-category="print" data-tilt
+                     data-title="Pamphlet" data-tag="PRINT"
+                     data-desc="A door-drop pamphlet — designed to survive a coffee table for a week, not a glance.">
+                    <img data-src="portfolio-images/print/PHAMPLET.webp" alt="Pamphlet" decoding="async">
+                </div>
+                <div class="work__item" data-category="print" data-tilt
+                     data-title="Standee — 02" data-tag="PRINT"
+                     data-desc="Retail-floor standee — readable from across the aisle, layered for hierarchy up close.">
+                    <img data-src="portfolio-images/print/standee%202.webp" alt="Standee 2" decoding="async">
+                </div>
+                <div class="work__item" data-category="print" data-tilt
+                     data-title="Standee — 03" data-tag="PRINT"
+                     data-desc="Companion standee — reuses the visual system but carries a new message.">
+                    <img data-src="portfolio-images/print/standee%203.webp" alt="Standee 3" decoding="async">
+                </div>
+                <div class="work__item" data-category="print" data-tilt
+                     data-title="Cheque Design" data-tag="PRINT"
+                     data-desc="A custom cheque template design — security guilloche, tight margins, banker-grade typography.">
+                    <img data-src="portfolio-images/print/cheque.webp" alt="Cheque" decoding="async">
+                </div>
+                <div class="work__item" data-category="print" data-tilt
+                     data-title="CRED Artwork" data-tag="PRINT"
+                     data-desc="A CRED-flavoured print piece — minimalist, type-led, premium feel.">
+                    <img data-src="portfolio-images/print/cred%20artwork.webp" alt="CRED" decoding="async">
+                </div>
+                <div class="work__item" data-category="print" data-tilt
+                     data-title="Design Associates Final" data-tag="PRINT"
+                     data-desc="Final print collateral for a design firm — confident wordmark, restrained palette, business-card-ready.">
+                    <img data-src="portfolio-images/print/design%20associates%20final.webp" alt="Design Associates" decoding="async">
+                </div>
+                <div class="work__item" data-category="print" data-tilt
+                     data-title="On The Edge — Print" data-tag="PRINT"
+                     data-desc="Editorial print spread with a kinetic layout — designed to make readers slow down.">
+                    <img data-src="portfolio-images/print/one%20the%20edge-01.webp" alt="On The Edge" decoding="async">
+                </div>
+                <div class="work__item" data-category="print" data-tilt
+                     data-title="Print — Final" data-tag="PRINT"
+                     data-desc="Final print design showcase.">
+                    <img data-src="portfolio-images/print/SSEK%20Menu%20Card.webp" alt="Print">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ FINALE / CONTACT ============ -->
+    <footer id="contact" class="finale">
+        <div class="finale__container">
+            <div class="finale__header">
+                <span class="section__label">// MISSION STATUS: COMPLETE</span>
+                <h2 class="finale__title">END OF <span class="text--yellow">LINE</span></h2>
+                <p class="finale__sub">Signal received. Now it's your turn to send one.</p>
+            </div>
+
+            <div class="finale__grid">
+                <!-- Contact Card -->
+                <div class="finale__card finale__card--primary">
+                    <h3 class="finale__card-title">PROJECT BRIEFING</h3>
+                    <p class="finale__card-text">Have a vision that needs a hero? Drop a line and let's build something legendary.</p>
+                    <a href="mailto:Sahilbeta007@gmail.com" class="finale__cta">
+                        <span>ESTABLISH CONNECTION</span>
+                        <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"></path></svg>
+                    </a>
+                </div>
+
+                <!-- Socials Column -->
+                <div class="finale__column">
+                    <div class="finale__card">
+                        <h4 class="finale__label">DIRECT LINE</h4>
+                        <a href="tel:+919148182640" class="finale__link">+91 9148182640</a>
+                    </div>
+                    <div class="finale__card">
+                        <h4 class="finale__label">SECURE CHANNEL</h4>
+                        <a href="https://www.linkedin.com/in/sahil-ladha/" target="_blank" class="finale__link">LinkedIn / Sahil-Ladha</a>
+                    </div>
+                    <div class="finale__card">
+                        <h4 class="finale__label">THE CAVE</h4>
+                        <p class="finale__link">Bengaluru, India</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="finale__footer">
+                <div class="finale__copyright">
+                    <p>© 2026 SAHIL LADHA. ALL RIGHTS RESERVED.</p>
+                    <p class="finale__status">STATUS: <span class="text--yellow">VIGILANT</span></p>
+                </div>
+                <button class="finale__top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                    <span>BACK TO TOP</span>
+                    <svg viewBox="0 0 24 24" width="16" height="16"><path fill="none" stroke="currentColor" stroke-width="2" d="M12 19V5m-7 7 7-7 7 7"></path></svg>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox__close" id="lightboxClose" aria-label="Close">&times;</button>
+        <button class="lightbox__nav lightbox__nav--prev" id="lightboxPrev" aria-label="Previous">‹</button>
+        <button class="lightbox__nav lightbox__nav--next" id="lightboxNext" aria-label="Next">›</button>
+        <div class="lightbox__media" id="lightboxMedia"></div>
+        <div class="lightbox__info">
+            <span class="lightbox__tag" id="lightboxTag">TAG</span>
+            <h3 class="lightbox__title" id="lightboxTitle">Title</h3>
+            <p class="lightbox__desc" id="lightboxDesc">Description</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
