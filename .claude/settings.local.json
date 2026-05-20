@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(awk 'NR==260,NR==626' \"C:/Users/LENOVO/Desktop/new/index.html\")",
-      "Bash(awk 'NR==624,NR==628' \"C:/Users/LENOVO/Desktop/new/index.html\")"
-    ]
-  }
-}

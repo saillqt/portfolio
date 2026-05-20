@@ -5,6 +5,130 @@ window.addEventListener('load', () => {
     }, 1800);
 });
 
+// ===== ANTIGRAVITY PARTICLE SYSTEM =====
+(function initAntigravity() {
+    const container = document.getElementById('heroParticles');
+    if (!container) return;
+
+    // Create canvas over the particles div
+    const canvas = document.createElement('canvas');
+    canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;';
+    container.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+
+    // Sizing
+    function resize() {
+        canvas.width  = container.offsetWidth;
+        canvas.height = container.offsetHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+
+    // Mouse tracking for repulsion
+    let mouse = { x: -9999, y: -9999 };
+    const hero = document.getElementById('hero');
+    if (hero) {
+        hero.addEventListener('mousemove', e => {
+            const r = hero.getBoundingClientRect();
+            mouse.x = e.clientX - r.left;
+            mouse.y = e.clientY - r.top;
+        }, { passive: true });
+        hero.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+    }
+
+    // Particle factory
+    const GOLD   = 'rgba(245,197,24,';
+    const WHITE  = 'rgba(255,255,255,';
+    const COUNT  = window.innerWidth < 768 ? 55 : 110;
+
+    function makeParticle() {
+        const isGold = Math.random() > 0.3;
+        const size   = isGold ? (Math.random() * 2.5 + 1) : (Math.random() * 1.5 + 0.5);
+        return {
+            x:      Math.random() * canvas.width,
+            y:      Math.random() * canvas.height,
+            size,
+            baseSize: size,
+            vx:     (Math.random() - 0.5) * 0.3,
+            vy:     -(Math.random() * 0.5 + 0.15),   // antigravity: always drift upward
+            alpha:  Math.random() * 0.6 + 0.15,
+            pulse:  Math.random() * Math.PI * 2,
+            color:  isGold ? GOLD : WHITE,
+            twinkleSpeed: Math.random() * 0.02 + 0.005,
+        };
+    }
+
+    let particles = Array.from({ length: COUNT }, makeParticle);
+
+    // Respawn at bottom when a particle exits top
+    function resetTop(p) {
+        p.x    = Math.random() * canvas.width;
+        p.y    = canvas.height + p.size * 2;
+        p.vx   = (Math.random() - 0.5) * 0.3;
+        p.vy   = -(Math.random() * 0.5 + 0.15);
+        p.alpha = Math.random() * 0.6 + 0.15;
+        p.pulse = Math.random() * Math.PI * 2;
+    }
+
+    const REPEL_RADIUS = 100;
+    const REPEL_FORCE  = 1.8;
+
+    function tick() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        particles.forEach(p => {
+            // Twinkle
+            p.pulse += p.twinkleSpeed;
+            const flickerAlpha = p.alpha * (0.7 + 0.3 * Math.sin(p.pulse));
+            const flickerSize  = p.baseSize * (0.9 + 0.1 * Math.sin(p.pulse * 1.3));
+
+            // Mouse repulsion (antigravity burst)
+            const dx   = p.x - mouse.x;
+            const dy   = p.y - mouse.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < REPEL_RADIUS && dist > 0) {
+                const force = (1 - dist / REPEL_RADIUS) * REPEL_FORCE;
+                p.vx += (dx / dist) * force * 0.06;
+                p.vy += (dy / dist) * force * 0.06;
+            }
+
+            // Velocity decay (keep it gentle)
+            p.vx *= 0.98;
+            p.vy  = p.vy * 0.98 - 0.005;   // tiny upward nudge each frame
+
+            // Move
+            p.x += p.vx;
+            p.y += p.vy;
+
+            // Wrap horizontally, respawn vertically
+            if (p.x < -p.size)              p.x = canvas.width  + p.size;
+            else if (p.x > canvas.width  + p.size) p.x = -p.size;
+            if (p.y < -p.size * 4)          resetTop(p);
+
+            // Draw glow
+            if (p.color === GOLD && flickerSize > 1.5) {
+                const grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, flickerSize * 3);
+                grd.addColorStop(0,   p.color + (flickerAlpha * 0.6) + ')');
+                grd.addColorStop(1,   p.color + '0)');
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, flickerSize * 3, 0, Math.PI * 2);
+                ctx.fillStyle = grd;
+                ctx.fill();
+            }
+
+            // Draw core dot
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, flickerSize, 0, Math.PI * 2);
+            ctx.fillStyle = p.color + flickerAlpha + ')';
+            ctx.fill();
+        });
+
+        requestAnimationFrame(tick);
+    }
+
+    tick();
+})();
+
 // ===== CURSOR GLOW =====
 const glow = document.getElementById('cursorGlow');
 if (glow && window.innerWidth > 768) {
@@ -256,17 +380,49 @@ workItems.forEach(item => {
     });
 });
 
-// Featured case click
-document.querySelectorAll('.work__featured-img').forEach(el => {
-    el.addEventListener('click', () => {
-        lightboxMedia.innerHTML = `<img src="${el.dataset.src}" alt="${el.dataset.title || ''}">`;
-        lightboxTag.textContent = el.dataset.tag || 'FEATURED';
-        lightboxTitle.textContent = el.dataset.title || '';
-        lightboxDesc.textContent = el.dataset.desc || '';
-        lightbox.classList.add('active');
-        activeIndex = -1; // disable nav for featured
+// ===== FEATURED CAROUSEL & LIGHTBOX =====
+(function initFeaturedCarousel() {
+    const slides = document.querySelectorAll('.work__featured-slide');
+    if (!slides.length) return;
+    
+    const dots = document.querySelectorAll('.featured-dot');
+    const btnPrev = document.querySelector('.featured-prev');
+    const btnNext = document.querySelector('.featured-next');
+    let active = 0;
+
+    function goToSlide(idx) {
+        if (idx < 0) idx = slides.length - 1;
+        if (idx >= slides.length) idx = 0;
+        if (idx === active) return;
+        
+        slides[active].classList.remove('active');
+        dots[active]?.classList.remove('active');
+        
+        active = idx;
+        
+        slides[active].classList.add('active');
+        dots[active]?.classList.add('active');
+    }
+
+    if (btnPrev) btnPrev.addEventListener('click', () => goToSlide(active - 1));
+    if (btnNext) btnNext.addEventListener('click', () => goToSlide(active + 1));
+    
+    dots.forEach((dot, idx) => {
+        dot.addEventListener('click', () => goToSlide(idx));
     });
-});
+
+    // Featured case lightbox click
+    document.querySelectorAll('.work__featured-img').forEach(el => {
+        el.addEventListener('click', () => {
+            lightboxMedia.innerHTML = `<img src="${el.dataset.src}" alt="${el.dataset.title || ''}">`;
+            lightboxTag.textContent = el.dataset.tag || 'FEATURED';
+            lightboxTitle.textContent = el.dataset.title || '';
+            lightboxDesc.textContent = el.dataset.desc || '';
+            lightbox.classList.add('active');
+            activeIndex = -1; // disable global nav for featured
+        });
+    });
+})();
 
 if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
 if (lightboxPrev) lightboxPrev.addEventListener('click', () => navigate(-1));
