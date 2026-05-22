@@ -267,7 +267,7 @@ const mediaObserver = new IntersectionObserver((entries) => {
     });
 }, { rootMargin: '600px 0px' });
 
-document.querySelectorAll('.work__item, .work__featured-img, .about__photo-wrap').forEach(el => {
+document.querySelectorAll('.work__item, .work__featured-img, .about__photo-wrap, .strip__item, .meme-card').forEach(el => {
     const hasLazy = el.querySelector('[data-src]');
     if (!hasLazy) {
         // Already has src= (eager) — just mark loaded once the image finishes
@@ -378,6 +378,55 @@ workItems.forEach(item => {
         const idx = visible.indexOf(item);
         if (idx >= 0) openLightbox(idx);
     });
+});
+
+// ===== STANDALONE LIGHTBOX (carousels, memes, videos) =====
+function openLightboxFromElement(el, tagOverride) {
+    const media = el.querySelector('img, video');
+    if (!media) return;
+    lightboxMedia.innerHTML = '';
+    if (media.tagName === 'VIDEO') {
+        const v = document.createElement('video');
+        v.src = media.currentSrc || media.src || media.dataset.src || '';
+        v.controls = true;
+        v.autoplay = true;
+        v.loop = true;
+        v.playsInline = true;
+        lightboxMedia.appendChild(v);
+    } else {
+        const img = document.createElement('img');
+        img.src = media.currentSrc || media.src || media.dataset.src || '';
+        img.alt = media.alt || '';
+        lightboxMedia.appendChild(img);
+    }
+    const rowLabel = el.closest('.strip-row')?.querySelector('.strip-row__label')?.textContent?.trim();
+    lightboxTag.textContent = el.dataset.tag || tagOverride || rowLabel || 'WORK';
+    lightboxTitle.textContent = el.dataset.title || media.alt || '';
+    lightboxDesc.textContent = el.dataset.desc || '';
+    lightbox.classList.add('active');
+    activeIndex = -1; // disable prev/next nav for standalone items
+}
+
+// Carousel strip items — every card
+document.querySelectorAll('.strip__item').forEach(el => {
+    el.addEventListener('click', () => openLightboxFromElement(el, 'CAROUSEL'));
+});
+
+// Memes — every card
+document.querySelectorAll('.meme-card').forEach(el => {
+    el.addEventListener('click', () => openLightboxFromElement(el, 'MEME'));
+});
+
+// Video cards — clicking the label opens lightbox; the video itself keeps its native controls
+document.querySelectorAll('.video-card').forEach(el => {
+    const label = el.querySelector('.video-card__label');
+    if (label) {
+        label.style.cursor = 'pointer';
+        label.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openLightboxFromElement(el, 'VIDEO');
+        });
+    }
 });
 
 // ===== FEATURED CAROUSEL & LIGHTBOX =====
