@@ -1675,12 +1675,14 @@ nav.scrolled{background:rgba(10,10,10,.95);border-bottom-color:rgba(245,197,24,.
 .videos{padding:100px 32px;background:#050505;display:block;min-height:0}
 .videos__inner{max-width:1280px;margin:0 auto;text-align:center}
 .videos__inner .work__sub{margin-bottom:48px}
-.videos__grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;margin-top:48px;text-align:left}
+.videos__grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));grid-auto-flow:dense;gap:20px;margin-top:48px;text-align:left}
 .video-card{position:relative;border:1px solid rgba(245,197,24,.15);border-radius:8px;overflow:hidden;background:#000;aspect-ratio:9/16;transition:transform .35s,border-color .35s,box-shadow .35s}
 .video-card:hover{border-color:var(--yellow);box-shadow:0 16px 40px rgba(245,197,24,.18);transform:translateY(-4px)}
 .video-card video{width:100%;height:100%;object-fit:cover;display:block;background:#000}
+.video-card iframe{width:100%;height:100%;display:block;background:#000;border:0}
 .video-card--wide{aspect-ratio:16/9;grid-column:span 2}
-@media(max-width:720px){.video-card--wide{grid-column:span 1;aspect-ratio:9/16}.videos__grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}}
+.video-card--square{aspect-ratio:1/1}
+@media(max-width:720px){.video-card--wide{grid-column:span 1;aspect-ratio:16/9}.video-card--square{aspect-ratio:1/1}.videos__grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}}
 .video-card__label{position:absolute;top:12px;left:12px;font-family:var(--font-pixel);font-size:.42rem;color:var(--yellow);background:rgba(0,0,0,.78);padding:6px 10px;letter-spacing:1.5px;z-index:2;border:1px solid rgba(245,197,24,.25);border-radius:3px}
 .videos__embed{margin-top:64px;border:1px solid rgba(245,197,24,.18);border-radius:10px;overflow:hidden;background:#0a0a0a;text-align:left}
 .videos__embed-head{padding:24px 28px;border-bottom:1px solid rgba(245,197,24,.12);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;background:linear-gradient(135deg,rgba(245,197,24,.04),transparent 70%)}
