@@ -417,6 +417,15 @@ document.querySelectorAll('.meme-card').forEach(el => {
     el.addEventListener('click', () => openLightboxFromElement(el, 'MEME'));
 });
 
+// Yogabar gallery — packs, totes, polaroid, mockups all pop into the shared lightbox
+document.querySelectorAll('#yogabar-retro-world .yo-mock, #yogabar-retro-world .yo-tote, #yogabar-retro-world .yo-pack, #yogabar-retro-world .yo-polaroid').forEach(el => {
+    el.addEventListener('click', (e) => {
+        // ignore clicks on actual links / buttons inside the card
+        if (e.target.closest('a, button')) return;
+        openLightboxFromElement(el, 'YOGABAR');
+    });
+});
+
 // Video cards — clicking the label opens lightbox; the video itself keeps its native controls
 document.querySelectorAll('.video-card').forEach(el => {
     const label = el.querySelector('.video-card__label');
@@ -568,4 +577,603 @@ document.querySelectorAll('[data-tilt]').forEach(el => {
         if (e.key === 'ArrowRight') go(active + 1);
         if (e.key === 'ArrowLeft')  go(active - 1);
     });
+})();
+
+
+// ===== YOGABAR LAB HTML CONTENT FOR IFRAME INJECTION =====
+const YOGABAR_LAB_HTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yogabar Retro Lab</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #0A1128;
+            color: #FFFDF9;
+            font-family: 'Inter', -apple-system, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        /* Animated grid bg */
+        .lab-bg {
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255, 75, 92, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 75, 92, 0.05) 1px, transparent 1px);
+            background-size: 36px 36px;
+            animation: bgDrift 18s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes bgDrift {
+            0% { background-position: 0 0; }
+            100% { background-position: 36px 36px; }
+        }
+
+        .lab-wrap {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            height: 100vh;
+        }
+
+        /* ─── LEFT: PACKAGE PREVIEW ─── */
+        .lab-preview {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .lab-canvas {
+            position: relative;
+            width: 260px;
+            height: 320px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            transition: background-color 0.5s ease;
+            overflow: visible;
+        }
+
+        .lab-canvas-grid {
+            position: absolute;
+            inset: 0;
+            border-radius: 12px;
+            background-image: repeating-conic-gradient(
+                rgba(255, 255, 255, 0.04) 0% 25%,
+                transparent 0% 50%
+            );
+            background-size: 16px 16px;
+        }
+
+        .lab-pkg {
+            position: relative;
+            z-index: 2;
+            width: 200px;
+            height: auto;
+            filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.6));
+            animation: floatPkg 3.8s ease-in-out infinite;
+            transition: opacity 0.25s ease;
+        }
+        @keyframes floatPkg {
+            0%, 100% { transform: translateY(0) rotate(-3deg); }
+            50% { transform: translateY(-14px) rotate(2deg); }
+        }
+
+        /* Spinning badges */
+        .lab-badge {
+            position: absolute;
+            width: 66px;
+            height: 66px;
+            border-radius: 50%;
+            border: 2px solid #FFFDF9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 8.5px;
+            letter-spacing: 0.4px;
+            line-height: 1.25;
+            padding: 5px;
+            z-index: 3;
+            transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .lab-badge.hidden { opacity: 0; transform: scale(0.5) !important; }
+
+        .badge-millets {
+            background: #FF4B5C;
+            top: -8%;
+            left: -16%;
+            animation: spin 8s linear infinite;
+        }
+        .badge-sugar {
+            background: #0c152b;
+            border-color: rgba(255,255,255,0.5);
+            bottom: 4%;
+            right: -18%;
+            animation: spin 11s linear infinite reverse;
+        }
+        .badge-grains {
+            background: #FFC045;
+            color: #0A1128;
+            border-color: #0A1128;
+            top: 38%;
+            right: -20%;
+            animation: spin 14s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ─── RIGHT: CONTROLS ─── */
+        .lab-controls {
+            width: 200px;
+            background: rgba(12, 21, 43, 0.95);
+            border-left: 1px solid rgba(255, 255, 255, 0.07);
+            padding: 18px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            overflow-y: auto;
+        }
+
+        .ctrl-header {
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+        .ctrl-leds {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 8px;
+        }
+        .ctrl-led {
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: #222;
+        }
+        .ctrl-led.r { background: #FF4B5C; box-shadow: 0 0 5px #FF4B5C; }
+        .ctrl-led.g { transition: all 0.2s; }
+        .ctrl-led.g.lit { background: #44ff88; box-shadow: 0 0 5px #44ff88; }
+        .ctrl-led.y { transition: all 0.2s; }
+        .ctrl-led.y.lit { background: #FFC045; box-shadow: 0 0 5px #FFC045; }
+
+        .ctrl-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .ctrl-label {
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.35);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        /* Color buttons */
+        .color-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px;
+        }
+        .color-btn {
+            border: 1.5px solid transparent;
+            border-radius: 3px;
+            padding: 7px 4px;
+            font-family: 'Inter', sans-serif;
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: border-color 0.15s, transform 0.1s;
+            text-align: center;
+        }
+        .color-btn:active { transform: scale(0.93); }
+        .color-btn.active { border-color: #FFFDF9; }
+
+        /* Toggle list */
+        .toggle-list { display: flex; flex-direction: column; gap: 5px; }
+        .toggle-btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 3px;
+            padding: 7px 8px;
+            color: rgba(255,255,255,0.4);
+            font-family: 'Inter', sans-serif;
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            transition: all 0.2s;
+        }
+        .toggle-btn .dot {
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+        .toggle-btn.active {
+            border-color: rgba(255, 75, 92, 0.5);
+            color: #FFFDF9;
+            background: rgba(255,75,92,0.07);
+        }
+        .toggle-btn.active .dot {
+            background: #FF4B5C;
+            box-shadow: 0 0 5px #FF4B5C;
+        }
+
+        /* Flavor buttons */
+        .flavor-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px;
+        }
+        .flavor-btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 3px;
+            padding: 8px 4px;
+            color: rgba(255,255,255,0.4);
+            font-family: 'Inter', sans-serif;
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            line-height: 1.4;
+        }
+        .flavor-btn.active {
+            border-color: #FFFDF9;
+            color: #FFFDF9;
+            background: rgba(255,255,255,0.04);
+        }
+
+        /* Logo at bottom */
+        .ctrl-logo {
+            margin-top: auto;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255,255,255,0.07);
+        }
+        .ctrl-logo img {
+            width: 90px;
+            opacity: 0.55;
+            filter: brightness(2);
+        }
+        .ctrl-logo-sub {
+            font-size: 7px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.2);
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="lab-bg"></div>
+
+    <div class="lab-wrap">
+
+        <!-- Package preview -->
+        <div class="lab-preview">
+            <div class="lab-canvas" id="labCanvas">
+                <div class="lab-canvas-grid"></div>
+
+                <div class="lab-badge badge-millets" id="badgeMillets">MIGHTY<br>MILLETS</div>
+                <div class="lab-badge badge-sugar" id="badgeSugar">NO<br>REFINED<br>SUGAR</div>
+                <div class="lab-badge badge-grains" id="badgeGrains">100%<br>WHOLE<br>GRAINS</div>
+
+                <img src="yogabar/blue package.png" id="pkgImg" class="lab-pkg" alt="Yogabar Package">
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="lab-controls">
+            <div class="ctrl-header">
+                <div class="ctrl-leds">
+                    <div class="ctrl-led r"></div>
+                    <div class="ctrl-led g" id="ledG"></div>
+                    <div class="ctrl-led y" id="ledY"></div>
+                </div>
+                <div class="ctrl-title">VIBE CONTROLLER V1.0</div>
+            </div>
+
+            <div>
+                <div class="ctrl-label">1. BACKDROP</div>
+                <div class="color-grid">
+                    <button class="color-btn active" data-color="navy"   style="background:#0c152b; color:#FFFDF9;">NAVY</button>
+                    <button class="color-btn"        data-color="coral"  style="background:#FF4B5C; color:#FFFDF9;">CORAL</button>
+                    <button class="color-btn"        data-color="cream"  style="background:#FFFDF9; color:#0c152b;">CREAM</button>
+                    <button class="color-btn"        data-color="gold"   style="background:#FFC045; color:#0c152b;">GOLD</button>
+                </div>
+            </div>
+
+            <div>
+                <div class="ctrl-label">2. RETRO CLAIMS</div>
+                <div class="toggle-list">
+                    <button class="toggle-btn active" data-badge="badgeMillets"><span class="dot"></span>MIGHTY MILLETS</button>
+                    <button class="toggle-btn active" data-badge="badgeSugar"><span class="dot"></span>NO REFINED SUGAR</button>
+                    <button class="toggle-btn active" data-badge="badgeGrains"><span class="dot"></span>100% WHOLE GRAINS</button>
+                </div>
+            </div>
+
+            <div>
+                <div class="ctrl-label">3. FLAVOR PACK</div>
+                <div class="flavor-grid">
+                    <button class="flavor-btn active" data-flavor="blue">BLUE<br>PACK</button>
+                    <button class="flavor-btn"        data-flavor="yellow">YELLOW<br>PACK</button>
+                </div>
+            </div>
+
+            <div class="ctrl-logo">
+                <img src="yogabar/logo red and white.png" alt="Yogabar" onerror="this.style.display='none'">
+                <div class="ctrl-logo-sub">MILLET MUESLI REDESIGN</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas  = document.getElementById('labCanvas');
+        const pkgImg  = document.getElementById('pkgImg');
+        const ledG    = document.getElementById('ledG');
+        const ledY    = document.getElementById('ledY');
+
+        const BG = { navy:'#0c152b', coral:'#FF4B5C', cream:'#FFFDF9', gold:'#FFC045' };
+
+        function flash(led) {
+            led.classList.add('lit');
+            setTimeout(() => led.classList.remove('lit'), 350);
+        }
+
+        // Color
+        document.querySelectorAll('.color-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                canvas.style.backgroundColor = BG[btn.dataset.color] || BG.navy;
+                flash(ledG);
+            });
+        });
+
+        // Badge toggles
+        document.querySelectorAll('.toggle-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('active');
+                const badge = document.getElementById(btn.dataset.badge);
+                if (badge) badge.classList.toggle('hidden');
+                flash(ledY);
+            });
+        });
+
+        // Flavor swap
+        document.querySelectorAll('.flavor-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.flavor-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                pkgImg.style.opacity = '0';
+                setTimeout(() => {
+                    pkgImg.src = btn.dataset.flavor === 'yellow'
+                        ? 'yogabar/yellow package.png'
+                        : 'yogabar/blue package.png';
+                    pkgImg.style.opacity = '1';
+                }, 220);
+                flash(ledG);
+                flash(ledY);
+            });
+        });
+    </script>
+</body>
+</html>
+`;
+
+// ===== DYNAMIC IFRAME INJECTION =====
+window.addEventListener('load', () => {
+    const iframe = document.getElementById('yogabar-iframe');
+    if (iframe) {
+        try {
+            const doc = iframe.contentDocument || iframe.contentWindow.document;
+            doc.open();
+            doc.write(YOGABAR_LAB_HTML);
+            doc.close();
+        } catch (e) {
+            console.error('Failed to inject iframe content:', e);
+        }
+    }
+});
+
+// ===== RETRO VIBE CUSTOMIZER SYSTEM =====
+(function initRetroCustomizer() {
+    const canvas = document.getElementById('customizer-canvas');
+    const pkgImg = document.getElementById('customizer-pkg-img');
+    const ledG = document.querySelector('.console-leds .led.green');
+    const ledY = document.querySelector('.console-leds .led.yellow');
+
+    const BG_COLORS = {
+        navy: '#1A2A4A',
+        blue: '#1E73BE',
+        red: '#C0392B',
+        cream: '#FAF0F0'
+    };
+
+    function flashLed(led) {
+        if (!led) return;
+        led.classList.add('lit');
+        setTimeout(() => led.classList.remove('lit'), 350);
+    }
+
+    // 1. Backdrop Color Changer
+    document.querySelectorAll('#bg-color-selectors .color-select').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('#bg-color-selectors .color-select').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const color = btn.dataset.color;
+            if (canvas && BG_COLORS[color]) {
+                canvas.style.backgroundColor = BG_COLORS[color];
+            }
+            flashLed(ledG);
+        });
+    });
+
+    // 2. Toggle claims/badges
+    document.querySelectorAll('.console-toggle-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            btn.classList.toggle('active');
+            const badgeId = 'canvas-' + btn.dataset.target;
+            const badge = document.getElementById(badgeId);
+            if (badge) {
+                badge.classList.toggle('active');
+            }
+            flashLed(ledY);
+        });
+    });
+
+    // 3. Flavor pack swap
+    document.querySelectorAll('[data-flavor]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('[data-flavor]').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            if (pkgImg) {
+                pkgImg.style.opacity = '0';
+                setTimeout(() => {
+                    pkgImg.src = btn.dataset.flavor === 'yellow'
+                        ? 'yogabar/yellow package.png'
+                        : 'yogabar/blue package.png';
+                    pkgImg.style.opacity = '1';
+                }, 220);
+            }
+            flashLed(ledG);
+            flashLed(ledY);
+        });
+    });
+
+    // 4. Interactive Swatch Cards (Click to Copy, Double Click to set Canvas Background)
+    document.querySelectorAll('.swatch-card').forEach(card => {
+        const hex = card.dataset.hex;
+        
+        // Visual Copy Toast overlay
+        const toast = document.createElement('div');
+        toast.className = 'swatch-toast';
+        toast.textContent = 'COPIED!';
+        card.appendChild(toast);
+
+        card.addEventListener('click', () => {
+            // Copy to clipboard
+            navigator.clipboard.writeText(hex).then(() => {
+                card.classList.add('copied-flash');
+                flashLed(ledG);
+                flashLed(ledY);
+                setTimeout(() => card.classList.remove('copied-flash'), 1000);
+            }).catch(err => {
+                console.error('Failed to copy hex code:', err);
+            });
+        });
+
+        card.addEventListener('dblclick', () => {
+            // Set canvas background to this color
+            if (canvas) {
+                canvas.style.backgroundColor = hex;
+            }
+            flashLed(ledG);
+            flashLed(ledY);
+            
+            // Sync with console buttons if applicable
+            document.querySelectorAll('#bg-color-selectors .color-select').forEach(btn => {
+                const btnColorVar = btn.getAttribute('style').match(/--btn-color:\s*(#[a-fA-F0-9]+)/);
+                if (btnColorVar && btnColorVar[1].toLowerCase() === hex.toLowerCase()) {
+                    document.querySelectorAll('#bg-color-selectors .color-select').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                }
+            });
+        });
+    });
+})();
+
+// ===== RETRO THEME ACTIVE MODE SWITCHER (EASTER EGG) =====
+(function initThemeSwitcher() {
+    const trigger = document.getElementById('retro-vibe-trigger');
+    const backBtn = document.getElementById('btn-back-batman');
+    const restoreBtn = document.getElementById('batman-vibe-restore');
+    const overlay = document.getElementById('transition-overlay');
+
+    if (!overlay) return;
+
+    function runTransition(toRetro) {
+        overlay.className = 'transition-overlay active';
+        if (!toRetro) {
+            overlay.classList.add('batman-color');
+        }
+
+        setTimeout(() => {
+            if (toRetro) {
+                document.body.classList.add('retro-vibe-active');
+            } else {
+                document.body.classList.remove('retro-vibe-active');
+            }
+            window.scrollTo(0, 0);
+
+            overlay.classList.remove('active');
+            overlay.classList.add('exit');
+
+            setTimeout(() => {
+                overlay.className = 'transition-overlay';
+            }, 600);
+        }, 600);
+    }
+
+    if (trigger) trigger.addEventListener('click', () => runTransition(true));
+    if (backBtn) backBtn.addEventListener('click', () => runTransition(false));
+    if (restoreBtn) restoreBtn.addEventListener('click', () => runTransition(false));
+
+    // Footer restore button
+    const footerRestoreBtn = document.getElementById('retro-footer-restore-btn');
+    if (footerRestoreBtn) footerRestoreBtn.addEventListener('click', () => runTransition(false));
+})();
+
+// ===== RETRO SCROLL-REVEAL =====
+(function initRetroReveal() {
+    const revealEls = document.querySelectorAll('.retro-reveal');
+    if (!revealEls.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    revealEls.forEach(el => observer.observe(el));
+
+    // Re-check visible elements when entering retro mode
+    const retroTrigger = document.getElementById('retro-vibe-trigger');
+    if (retroTrigger) {
+        retroTrigger.addEventListener('click', () => {
+            setTimeout(() => {
+                revealEls.forEach(el => {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top < window.innerHeight && rect.bottom > 0) {
+                        el.classList.add('is-visible');
+                    }
+                });
+            }, 700); // after transition completes
+        });
+    }
 })();
