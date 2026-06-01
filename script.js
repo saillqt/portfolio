@@ -1114,6 +1114,7 @@ window.addEventListener('load', () => {
     const transitionBars = overlay ? [...overlay.querySelectorAll('.transition-bar')] : [];
     let transitionTimer;
     let isTransitioning = false;
+    let lockedScrollY = 0;
 
     if (!overlay) return;
 
@@ -1140,36 +1141,47 @@ window.addEventListener('load', () => {
             };
 
             transitionBars.forEach(bar => bar.addEventListener('transitionend', onEnd));
-            transitionTimer = setTimeout(finish, 850);
+            transitionTimer = setTimeout(finish, 1400);
         });
     }
 
-    function jumpToTop() {
+    function lockPage() {
         const html = document.documentElement;
         const body = document.body;
-        const previousScrollBehavior = html.style.scrollBehavior;
-        const previousBodyScrollBehavior = body.style.scrollBehavior;
-        html.style.scrollBehavior = 'auto';
-        body.style.scrollBehavior = 'auto';
+        lockedScrollY = window.scrollY || html.scrollTop || body.scrollTop || 0;
+        html.classList.add('theme-switching');
+        body.style.position = 'fixed';
+        body.style.top = `-${lockedScrollY}px`;
+        body.style.left = '0';
+        body.style.right = '0';
+        body.style.width = '100%';
+    }
+
+    function unlockAtTop() {
+        const html = document.documentElement;
+        const body = document.body;
+        body.style.position = '';
+        body.style.top = '';
+        body.style.left = '';
+        body.style.right = '';
+        body.style.width = '';
         window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
         html.scrollTop = 0;
         body.scrollTop = 0;
-        setTimeout(() => {
-            html.style.scrollBehavior = previousScrollBehavior;
-            body.style.scrollBehavior = previousBodyScrollBehavior;
-        }, 120);
     }
 
     function runTransition(toRetro) {
         if (isTransitioning) return;
         isTransitioning = true;
 
+        lockPage();
         overlay.className = 'transition-overlay';
         if (!toRetro) {
             overlay.classList.add('batman-color');
         }
 
         requestAnimationFrame(async () => {
+            overlay.offsetHeight;
             const enterTransition = waitForBars();
             overlay.classList.add('active');
             await enterTransition;
@@ -1179,13 +1191,26 @@ window.addEventListener('load', () => {
             } else {
                 document.body.classList.remove('retro-vibe-active');
             }
-            jumpToTop();
+            unlockAtTop();
+            await new Promise(resolve => requestAnimationFrame(() => {
+                unlockAtTop();
+                requestAnimationFrame(resolve);
+            }));
 
-            const exitTransition = waitForBars();
+            overlay.style.visibility = 'hidden';
             overlay.classList.remove('active');
-            overlay.classList.add('exit');
-            await exitTransition;
+            transitionBars.forEach(bar => {
+                bar.style.transition = 'none';
+                bar.style.transform = 'translate3d(-101%,0,0)';
+            });
+            overlay.offsetHeight;
             overlay.className = 'transition-overlay';
+            transitionBars.forEach(bar => {
+                bar.style.transition = '';
+                bar.style.transform = '';
+            });
+            overlay.style.visibility = '';
+            document.documentElement.classList.remove('theme-switching');
             isTransitioning = false;
         });
     }
