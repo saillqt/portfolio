@@ -1111,30 +1111,83 @@ window.addEventListener('load', () => {
     const backBtn = document.getElementById('btn-back-batman');
     const restoreBtn = document.getElementById('batman-vibe-restore');
     const overlay = document.getElementById('transition-overlay');
+    const transitionBars = overlay ? [...overlay.querySelectorAll('.transition-bar')] : [];
+    let transitionTimer;
+    let isTransitioning = false;
 
     if (!overlay) return;
 
+    function waitForBars() {
+        return new Promise(resolve => {
+            if (!transitionBars.length) {
+                resolve();
+                return;
+            }
+
+            let done = false;
+            const finishedBars = new Set();
+            const finish = () => {
+                if (done) return;
+                done = true;
+                transitionBars.forEach(bar => bar.removeEventListener('transitionend', onEnd));
+                clearTimeout(transitionTimer);
+                resolve();
+            };
+            const onEnd = event => {
+                if (event.propertyName !== 'transform') return;
+                finishedBars.add(event.target);
+                if (finishedBars.size === transitionBars.length) finish();
+            };
+
+            transitionBars.forEach(bar => bar.addEventListener('transitionend', onEnd));
+            transitionTimer = setTimeout(finish, 850);
+        });
+    }
+
+    function jumpToTop() {
+        const html = document.documentElement;
+        const body = document.body;
+        const previousScrollBehavior = html.style.scrollBehavior;
+        const previousBodyScrollBehavior = body.style.scrollBehavior;
+        html.style.scrollBehavior = 'auto';
+        body.style.scrollBehavior = 'auto';
+        window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+        html.scrollTop = 0;
+        body.scrollTop = 0;
+        setTimeout(() => {
+            html.style.scrollBehavior = previousScrollBehavior;
+            body.style.scrollBehavior = previousBodyScrollBehavior;
+        }, 120);
+    }
+
     function runTransition(toRetro) {
-        overlay.className = 'transition-overlay active';
+        if (isTransitioning) return;
+        isTransitioning = true;
+
+        overlay.className = 'transition-overlay';
         if (!toRetro) {
             overlay.classList.add('batman-color');
         }
 
-        setTimeout(() => {
+        requestAnimationFrame(async () => {
+            const enterTransition = waitForBars();
+            overlay.classList.add('active');
+            await enterTransition;
+
             if (toRetro) {
                 document.body.classList.add('retro-vibe-active');
             } else {
                 document.body.classList.remove('retro-vibe-active');
             }
-            window.scrollTo(0, 0);
+            jumpToTop();
 
+            const exitTransition = waitForBars();
             overlay.classList.remove('active');
             overlay.classList.add('exit');
-
-            setTimeout(() => {
-                overlay.className = 'transition-overlay';
-            }, 600);
-        }, 600);
+            await exitTransition;
+            overlay.className = 'transition-overlay';
+            isTransitioning = false;
+        });
     }
 
     if (trigger) trigger.addEventListener('click', () => runTransition(true));
