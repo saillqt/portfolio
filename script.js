@@ -1255,3 +1255,54 @@ window.addEventListener('load', () => {
         });
     }
 })();
+
+/* ===============================================================
+   LOVELOCAL · ENTER THE AISLE
+   Opens the LoveLocal "walk the aisle" microsite in a fullscreen
+   iframe behind a roller-shutter that rolls UP to reveal it
+   (and rolls back DOWN on exit) — a dukaan opening for business.
+   =============================================================== */
+(function initLoveLocal() {
+    const enterBtn = document.getElementById('llEnter');
+    const world    = document.getElementById('lovelocal-world');
+    const iframe   = document.getElementById('lovelocal-iframe');
+    const shutter  = document.getElementById('llShutter');
+    const exitBtn  = document.getElementById('llExit');
+    if (!enterBtn || !world || !iframe || !shutter) return;
+
+    const SRC = 'portfolio-images/LoveLocal%20campaign/index.html';
+    let busy = false;
+
+    function open() {
+        if (busy || world.classList.contains('is-active')) return;
+        busy = true;
+        // Lazy-load the aisle only on first open.
+        if (!iframe.src || iframe.src.endsWith('about:blank')) iframe.src = SRC;
+        world.classList.add('is-active');     // reveal world, shutter down covering it
+        shutter.classList.remove('is-up');
+        document.body.style.overflow = 'hidden';
+        // Double rAF so the "down" state paints before we animate up.
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+            shutter.classList.add('is-up');   // roll the shutter UP → dukaan opens
+            setTimeout(() => { busy = false; }, 2000);
+        }));
+    }
+
+    function close() {
+        if (busy || !world.classList.contains('is-active')) return;
+        busy = true;
+        shutter.classList.remove('is-up');    // roll shutter back DOWN to cover
+        setTimeout(() => {
+            world.classList.remove('is-active');
+            document.body.style.overflow = '';
+            iframe.src = 'about:blank';        // unload the heavy aisle
+            busy = false;
+        }, 1900);                             // matches shutter transition
+    }
+
+    enterBtn.addEventListener('click', open);
+    if (exitBtn) exitBtn.addEventListener('click', close);
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && world.classList.contains('is-active')) close();
+    });
+})();

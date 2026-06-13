@@ -2019,3 +2019,147 @@ body.retro-vibe-active .batman-vibe-restore{display:none !important}
 #yogabar-retro-world .retro-reveal-delay-1{transition-delay:.1s}
 #yogabar-retro-world .retro-reveal-delay-2{transition-delay:.2s}
 #yogabar-retro-world .retro-reveal-delay-3{transition-delay:.3s}
+
+/* ============================================================
+   LOVELOCAL · ENTER THE AISLE  (entry band + roller-shutter)
+   Brand: magenta #C2117A · yellow #FFC400 · navy #1C2B4A · cream #FBF3DC
+   ============================================================ */
+.ll-entry{
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:120px 24px;
+    background:#1C2B4A;
+    color:#FBF3DC;
+    isolation:isolate;
+}
+/* warm dukaan glow + faint shelf grid behind the card */
+.ll-entry__bg{
+    position:absolute; inset:0; z-index:-1;
+    background:
+        radial-gradient(120% 90% at 50% 0%, rgba(194,17,122,.55) 0%, rgba(194,17,122,0) 55%),
+        radial-gradient(100% 80% at 50% 120%, rgba(255,196,0,.22) 0%, rgba(255,196,0,0) 60%),
+        repeating-linear-gradient(90deg, rgba(251,243,220,.05) 0 2px, transparent 2px 86px),
+        repeating-linear-gradient(0deg, rgba(251,243,220,.05) 0 2px, transparent 2px 120px),
+        #1C2B4A;
+}
+.ll-entry__card{ max-width:780px; }
+.ll-entry__kicker{
+    display:inline-block;
+    font-family:'Space Mono',monospace;
+    font-size:.78rem; letter-spacing:.28em; text-transform:uppercase;
+    color:#FFC400; margin-bottom:18px;
+}
+.ll-entry__title{
+    font-family:'Baloo 2','Fredoka',sans-serif;
+    font-weight:800;
+    font-size:clamp(2.6rem,7vw,5.2rem);
+    line-height:.98; margin:0 0 18px; color:#fff;
+}
+.ll-entry__title span{ color:#FFC400; }
+.ll-entry__sub{
+    font-family:'Fredoka','Inter',sans-serif;
+    font-size:clamp(1rem,2vw,1.25rem);
+    line-height:1.55; max-width:54ch; margin:0 auto 34px;
+    color:rgba(251,243,220,.86);
+}
+.ll-entry__btn{
+    display:inline-flex; align-items:center; gap:12px;
+    font-family:'Baloo 2',sans-serif; font-weight:700;
+    font-size:1.15rem; color:#fff;
+    background:#C2117A;
+    border:3px solid #1C2B4A;
+    box-shadow:0 6px 0 #8E1066, 0 14px 30px rgba(194,17,122,.45);
+    border-radius:60px;
+    padding:18px 34px; cursor:pointer;
+    transition:transform .12s ease, box-shadow .12s ease, background .2s ease;
+}
+.ll-entry__btn:hover{ background:#d2218a; transform:translateY(-3px); box-shadow:0 9px 0 #8E1066, 0 18px 36px rgba(194,17,122,.55); }
+.ll-entry__btn:active{ transform:translateY(3px); box-shadow:0 2px 0 #8E1066, 0 6px 14px rgba(194,17,122,.4); }
+.ll-entry__btn-cart{ font-size:1.4rem; }
+.ll-entry__hint{
+    margin-top:18px; font-family:'Space Mono',monospace;
+    font-size:.74rem; letter-spacing:.16em; text-transform:uppercase;
+    color:rgba(251,243,220,.5);
+}
+
+/* ---- Fullscreen world ---- */
+.lovelocal-world{
+    position:fixed; inset:0; z-index:9000;
+    display:none; background:#1C2B4A;
+}
+.lovelocal-world.is-active{ display:block; }
+.lovelocal-world iframe{
+    position:absolute; inset:0; width:100%; height:100%; border:0;
+}
+.ll-exit{
+    position:absolute; top:16px; left:16px; z-index:9400;
+    font-family:'Baloo 2',sans-serif; font-weight:700; font-size:.95rem;
+    color:#1C2B4A; background:#FFC400;
+    border:3px solid #1C2B4A; border-radius:40px;
+    padding:9px 18px; cursor:pointer;
+    box-shadow:0 4px 0 rgba(28,43,74,.45);
+    opacity:0; transition:opacity .4s ease 1.6s;
+}
+.lovelocal-world.is-active .ll-exit{ opacity:1; }
+.ll-exit:hover{ background:#ffd23f; }
+
+/* ---- Roller shutter (the themed transition) ---- */
+.ll-shutter{
+    position:absolute; inset:0; z-index:9300;
+    transform:translateY(0);
+    transition:transform 1.9s cubic-bezier(.76,0,.24,1);
+    /* corrugated horizontal slats in painted-magenta */
+    background:
+        repeating-linear-gradient(180deg,
+            #d4218c 0px, #c2117a 7px, #9c0f63 15px, #c2117a 23px, #d4218c 28px);
+    box-shadow:inset 0 0 140px rgba(0,0,0,.45);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    will-change:transform;
+}
+.ll-shutter.is-up{ transform:translateY(-100%); }
+/* top mounting rail */
+.ll-shutter__rail{
+    position:absolute; top:0; left:0; right:0; height:26px;
+    background:linear-gradient(#5a0c3b,#3d0827);
+    box-shadow:0 6px 14px rgba(0,0,0,.4);
+}
+/* painted shop signboard */
+.ll-shutter__sign{
+    display:flex; flex-direction:column; align-items:center; gap:10px;
+    padding:26px 50px;
+    background:#1C2B4A;
+    border:5px solid #FFC400;
+    border-radius:18px;
+    box-shadow:0 14px 40px rgba(0,0,0,.45);
+    transform:translateY(-6%);
+}
+.ll-shutter__brand{
+    font-family:'Baloo 2',sans-serif; font-weight:800;
+    font-size:clamp(2.4rem,6vw,4rem); line-height:1; color:#fff;
+}
+.ll-shutter__brand::first-letter{ color:#FFC400; }
+.ll-shutter__tag{
+    font-family:'Fredoka',sans-serif; font-weight:600;
+    font-size:clamp(.85rem,1.6vw,1.05rem); letter-spacing:.06em;
+    color:#FFC400;
+}
+/* leading bottom edge bar with a little latch */
+.ll-shutter__edge{
+    position:absolute; left:0; right:0; bottom:0; height:34px;
+    background:linear-gradient(#9c0f63,#5a0c3b);
+    border-top:3px solid rgba(255,196,0,.6);
+    display:flex; align-items:center; justify-content:center;
+}
+.ll-shutter__lock{
+    width:64px; height:12px; border-radius:8px;
+    background:#FFC400; box-shadow:0 2px 0 rgba(0,0,0,.35);
+}
+.ll-shutter.is-up .ll-shutter__sign{ transition:opacity .5s ease; opacity:0; }
+
+@media (prefers-reduced-motion: reduce){
+    .ll-shutter{ transition:transform .01s linear; }
+}

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>LoveLocal — The Aisle · A case study by Sahil</title>
+  <meta name="description" content="Walk the aisle. A first-person scroll-driven case study for LoveLocal — trust, nostalgia & your local dukaan, now on your phone." />
+
+  <!-- Fonts: heavy rounded display + body (Baloo 2 / Fredoka). TODO: swap if you prefer another. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css?v=no-gate-1" />
+</head>
+<body>
+
+  <!-- ============================================================= -->
+  <!-- TOP CHROME: logo + persistent aisle map ("you are here")       -->
+  <!-- ============================================================= -->
+  <header class="chrome" aria-hidden="false">
+    <a class="brand" href="#" aria-label="LoveLocal">
+      <!-- TODO: lovelocal-logo.svg is the campaign mark -->
+      <img src="logo.svg" alt="LoveLocal" />
+    </a>
+
+    <nav class="aisle-map" aria-label="Aisle map — you are here">
+      <span class="aisle-map__label">Aisle</span>
+      <ul class="aisle-map__stops">
+        <!-- Filled by JS from the STATIONS list -->
+      </ul>
+      <span class="aisle-map__current" id="mapCurrent">Andar</span>
+    </nav>
+  </header>
+
+  <!-- ============================================================= -->
+  <!-- THE STAGE: fixed full-viewport 3D camera. Everything 3D lives  -->
+  <!-- inside .world, which we glide FORWARD on translateZ as you      -->
+  <!-- scroll. The tall .track below is what actually drives scroll.   -->
+  <!-- ============================================================= -->
+  <div class="stage" aria-hidden="true">
+    <!-- The supermarket aisle artwork (vector → stays crisp on push-in) -->
+    <img class="aisle-bg" src="bg.svg" alt="" />
+
+    <!-- warm spotlight cone over the active product -->
+    <div class="spotlight" aria-hidden="true"></div>
+
+    <!-- atmospheric fog: hides distant pop-in, adds depth -->
+    <div class="fog"></div>
+
+    <div class="world" id="world">
+      <!-- Floor & ceiling planes (rotateX) build the corridor -->
+      <div class="plane plane--floor"></div>
+      <div class="plane plane--ceiling"></div>
+
+      <!-- In-aisle stations (shelves + product) are injected here by JS -->
+      <div id="stations"></div>
+    </div>
+
+    <!-- Flat, screen-space click target over the active product. The 3D
+         products can't be reliably clicked (Chromium compositor hit-testing
+         falls through 3D transforms), so this invisible button — in normal
+         2D space — is the real "pick it up" affordance. JS shows it only on
+         product stations and opens that station's panel. -->
+    <button class="hotspot" id="hotspot" type="button" aria-label="Shelf se uthao" hidden></button>
+
+    <!-- Flat checkout CTAs (same reason as the hotspot: keep the real links
+         out of 3D space so they're reliably clickable). Shown only at the
+         checkout station. -->
+    <div class="end-actions" id="endActions" hidden>
+      <a class="btn btn--yellow" href="mailto:sahilbeta007@gmail.com">Email Sahil</a>
+    </div>
+
+    <!-- ENTRANCE hero: a 2D doorway frame on top of the 3D aisle.
+         We FADE/parallax it away on first scroll — never zoom into it. -->
+    <section class="hero" id="hero">
+      <div class="hero__frame">
+        <!-- TODO: drop a real aisle photo at assets/aisle-hero.png to replace
+             the CSS-built entrance below (uncomment the <img>). -->
+        <!-- <img class="hero__img" src="assets/aisle-hero.png" alt="" /> -->
+        <div class="hero__art" aria-hidden="true"></div>
+
+        <!-- floating doodles around the headline -->
+        <span class="hd hd--1" aria-hidden="true">✦</span>
+        <span class="hd hd--2" aria-hidden="true">♥</span>
+        <span class="hd hd--3" aria-hidden="true">✧</span>
+        <span class="hd hd--4" aria-hidden="true">✦</span>
+
+        <div class="hero__copy">
+          <p class="kicker">LoveLocal · Design case study</p>
+          <h1 class="hero__title">Yaad hai woh<br /><span>dukaan?</span></h1>
+          <svg class="squiggle" viewBox="0 0 240 14" aria-hidden="true"><path d="M3 9 Q 18 2 33 9 T 63 9 T 93 9 T 123 9 T 153 9 T 183 9 T 213 9 T 237 8" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg>
+          <p class="hero__sub">Woh bharosa, woh apnapan — ab aapke phone par.<br />Scroll karo, aur aao andar. 🛒</p>
+          <button class="enter-cue" id="enterCue" type="button">
+            <span>Aao andar</span>
+            <span class="enter-cue__arrow">↓</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- The scroll track: its height = how far you walk. ScrollTrigger
+       reads progress off this and maps it to camera Z. -->
+  <div class="track" id="track" aria-hidden="true"></div>
+
+  <!-- ============================================================= -->
+  <!-- PRODUCT PANEL: slides up when you pick a product off the shelf -->
+  <!-- ============================================================= -->
+  <div class="panel-scrim" id="scrim" hidden></div>
+  <aside class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="panelTitle" hidden>
+    <button class="panel__close" id="panelClose" type="button" aria-label="Wapas aisle mein">✕</button>
+    <div class="panel__inner">
+      <div class="panel__stage" id="panelStage"><!-- asset injected --></div>
+      <div class="panel__meta">
+        <p class="panel__tag" id="panelTag"></p>
+        <h2 class="panel__title" id="panelTitle"></h2>
+        <p class="panel__why" id="panelWhy"></p>
+        <button class="flip-btn" id="flipBtn" type="button" hidden>Palto ↻</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Reduced-motion / no-JS hint -->
+  <noscript>
+    <p style="padding:2rem;font-family:sans-serif">This case study uses JavaScript for the aisle walk. Please enable it, or view the PDF deck.</p>
+  </noscript>
+
+  <!-- GSAP + ScrollTrigger via CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="script.js?v=no-gate-1" defer></script>
+</body>
+</html>
