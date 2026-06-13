@@ -23,38 +23,38 @@ const STATIONS = [
     id: "flyer", map: "Flyer",
     kind: "product",
     label: "Flyer",
-    thumb: "side 1.png",
-    peek: { left: ["flyer mock up 1.png"], right: ["flyer mock up 2.png"] }, // peek out at the sides when you arrive
+    thumb: "side 1.webp",
+    peek: { left: ["flyer mock up 1.webp"], right: ["flyer mock up 2.webp"] }, // peek out at the sides when you arrive
     panel: {
       tag: "Deliverable 01 · Print + digital flyer",
       title: "Your local shops. Now on your phone.",
       why: "Loud, scannable, mohalle-friendly. Front sells the promise, back stocks the proof — categories you already trust.",
-      faces: ["side 1.png", "side 2.png"], // flip front/back
+      faces: ["side 1.webp", "side 2.webp"], // flip front/back
     },
   },
   {
     id: "bag", map: "Bag",
     kind: "product",
     label: "Delivery Bag",
-    thumb: "bag front.png",
-    peek: { left: ["bag mockup 1.png", "bag mockup 3.png"], right: ["bag mockup 2.png", "bag mockup 4.png"] },
+    thumb: "bag front.webp",
+    peek: { left: ["bag mockup 1.webp", "bag mockup 3.webp"], right: ["bag mockup 2.webp", "bag mockup 4.webp"] },
     panel: {
       tag: "Deliverable 02 · Delivery bag",
       title: "The brand, carried home.",
       why: "Every doorstep is a billboard. Front greets, back reassures — bharosa that travels the last mile.",
-      faces: ["bag front.png", "bag back.png"],
+      faces: ["bag front.webp", "bag back.webp"],
     },
   },
   {
     id: "insta", map: "Post",
     kind: "product",
     label: "Instagram Post",
-    thumb: "Instagram post.png",
+    thumb: "Instagram post.webp",
     panel: {
       tag: "Deliverable 03 · Instagram post",
       title: "Thumb-stopping, in-feed.",
       why: "Built for the scroll: bold hook, one clear message, brand colours that pop in a crowded feed.",
-      phone: "Instagram post.png", // shown inside phone.png frame
+      phone: "Instagram post.webp", // shown inside phone.png frame
       isInstagram: true, // enable interactive features
     },
   },

@@ -880,7 +880,7 @@ const YOGABAR_LAB_HTML = `<!DOCTYPE html>
                 <div class="lab-badge badge-sugar" id="badgeSugar">NO<br>REFINED<br>SUGAR</div>
                 <div class="lab-badge badge-grains" id="badgeGrains">100%<br>WHOLE<br>GRAINS</div>
 
-                <img src="yogabar/blue package.png" id="pkgImg" class="lab-pkg" alt="Yogabar Package">
+                <img src="yogabar/blue package.webp" id="pkgImg" class="lab-pkg" alt="Yogabar Package">
             </div>
         </div>
 
@@ -923,7 +923,7 @@ const YOGABAR_LAB_HTML = `<!DOCTYPE html>
             </div>
 
             <div class="ctrl-logo">
-                <img src="yogabar/logo red and white.png" alt="Yogabar" onerror="this.style.display='none'">
+                <img src="yogabar/logo red and white.webp" alt="Yogabar" onerror="this.style.display='none'">
                 <div class="ctrl-logo-sub">MILLET MUESLI REDESIGN</div>
             </div>
         </div>
@@ -970,8 +970,8 @@ const YOGABAR_LAB_HTML = `<!DOCTYPE html>
                 pkgImg.style.opacity = '0';
                 setTimeout(() => {
                     pkgImg.src = btn.dataset.flavor === 'yellow'
-                        ? 'yogabar/yellow package.png'
-                        : 'yogabar/blue package.png';
+                        ? 'yogabar/yellow package.webp'
+                        : 'yogabar/blue package.webp';
                     pkgImg.style.opacity = '1';
                 }, 220);
                 flash(ledG);
@@ -1053,8 +1053,8 @@ window.addEventListener('load', () => {
                 pkgImg.style.opacity = '0';
                 setTimeout(() => {
                     pkgImg.src = btn.dataset.flavor === 'yellow'
-                        ? 'yogabar/yellow package.png'
-                        : 'yogabar/blue package.png';
+                        ? 'yogabar/yellow package.webp'
+                        : 'yogabar/blue package.webp';
                     pkgImg.style.opacity = '1';
                 }, 220);
             }
