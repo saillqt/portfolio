@@ -300,22 +300,97 @@ const playObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.25 });
 videoEls.forEach(v => playObserver.observe(v));
 
-// ===== WORK FILTER =====
+// ===== WORK FILTER + CURATION + DECLASSIFY PAGINATION =====
+// Curated order — strongest, most diverse pieces surface first.
+const CURATED_ORDER = [
+    'Key Visual — Hero',
+    'Nutripaw — Packaging Design',
+    'Meet The Coders — Logo I',
+    'Cadbury\'s India',
+    'Decode Age — Ad I',
+    'Nike Case Study',
+    'World Debt',
+    'Fevicol — Case Study I',
+    'Vader',
+    'Pelé Tribute',
+    'We The Leaders',
+    'Amusement Park — Laughter Day',
+    'Swivl — Ad I',
+    'Dark Santa',
+    'Electricity Prices',
+    'Batman Ninja',
+    'Monk Mantra — Ad XI',
+    'GreyB — Post Cover I',
+    'Louis Vuitton',
+    '7 Rivers — Branding',
+    'Chart Patterns — Fingrad',
+    'Menu Card — 01',
+    'Engagement Post — 01',
+    'Unacademy — Spec Ad'
+];
+
+(function curateGrid() {
+    const grid = document.querySelector('.work__grid');
+    if (!grid) return;
+    const rank = new Map(CURATED_ORDER.map((t, i) => [t, i]));
+    const BIG = CURATED_ORDER.length;
+    workItems.sort((a, b) => {
+        const ra = rank.has(a.dataset.title) ? rank.get(a.dataset.title) : BIG;
+        const rb = rank.has(b.dataset.title) ? rank.get(b.dataset.title) : BIG;
+        return ra - rb;
+    });
+    workItems.forEach(item => grid.appendChild(item));
+})();
+
 const filterBtns = document.querySelectorAll('.work__filter');
+const workMoreBtn = document.getElementById('workMore');
+const workMoreCount = document.getElementById('workMoreCount');
+const WORK_PAGE = 12;
+let workCap = WORK_PAGE;
+let activeFilter = 'all';
+
+// Show item counts on the tabs
+filterBtns.forEach(btn => {
+    const f = btn.dataset.filter;
+    const n = f === 'all' ? workItems.length
+        : workItems.filter(i => i.dataset.category === f).length;
+    const count = document.createElement('span');
+    count.className = 'work__filter-count';
+    count.textContent = n;
+    btn.appendChild(count);
+});
+
+function applyWorkFilter() {
+    const matching = workItems.filter(i =>
+        activeFilter === 'all' || i.dataset.category === activeFilter);
+    workItems.forEach(i => i.classList.add('hidden'));
+    matching.slice(0, workCap).forEach(i => i.classList.remove('hidden'));
+
+    const remaining = Math.max(0, matching.length - workCap);
+    if (workMoreBtn) {
+        workMoreBtn.style.display = remaining > 0 ? '' : 'none';
+        if (workMoreCount) workMoreCount.textContent = remaining + ' FILE' + (remaining === 1 ? '' : 'S') + ' SEALED';
+    }
+}
+
 filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
         filterBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        const filter = btn.dataset.filter;
-        workItems.forEach(item => {
-            if (filter === 'all' || item.dataset.category === filter) {
-                item.classList.remove('hidden');
-            } else {
-                item.classList.add('hidden');
-            }
-        });
+        activeFilter = btn.dataset.filter;
+        workCap = WORK_PAGE;
+        applyWorkFilter();
     });
 });
+
+if (workMoreBtn) {
+    workMoreBtn.addEventListener('click', () => {
+        workCap += WORK_PAGE;
+        applyWorkFilter();
+    });
+}
+
+applyWorkFilter();
 
 // ===== LIGHTBOX with title & description + prev/next =====
 const lightbox = document.getElementById('lightbox');
@@ -579,424 +654,6 @@ document.querySelectorAll('[data-tilt]').forEach(el => {
     });
 })();
 
-
-// ===== YOGABAR LAB HTML CONTENT FOR IFRAME INJECTION =====
-const YOGABAR_LAB_HTML = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yogabar Retro Lab</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
-    <style>
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            background: #0A1128;
-            color: #FFFDF9;
-            font-family: 'Inter', -apple-system, sans-serif;
-            height: 100vh;
-            overflow: hidden;
-            user-select: none;
-        }
-
-        /* Animated grid bg */
-        .lab-bg {
-            position: fixed;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(255, 75, 92, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 75, 92, 0.05) 1px, transparent 1px);
-            background-size: 36px 36px;
-            animation: bgDrift 18s linear infinite;
-            pointer-events: none;
-        }
-        @keyframes bgDrift {
-            0% { background-position: 0 0; }
-            100% { background-position: 36px 36px; }
-        }
-
-        .lab-wrap {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            height: 100vh;
-        }
-
-        /* ─── LEFT: PACKAGE PREVIEW ─── */
-        .lab-preview {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .lab-canvas {
-            position: relative;
-            width: 260px;
-            height: 320px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-            transition: background-color 0.5s ease;
-            overflow: visible;
-        }
-
-        .lab-canvas-grid {
-            position: absolute;
-            inset: 0;
-            border-radius: 12px;
-            background-image: repeating-conic-gradient(
-                rgba(255, 255, 255, 0.04) 0% 25%,
-                transparent 0% 50%
-            );
-            background-size: 16px 16px;
-        }
-
-        .lab-pkg {
-            position: relative;
-            z-index: 2;
-            width: 200px;
-            height: auto;
-            filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.6));
-            animation: floatPkg 3.8s ease-in-out infinite;
-            transition: opacity 0.25s ease;
-        }
-        @keyframes floatPkg {
-            0%, 100% { transform: translateY(0) rotate(-3deg); }
-            50% { transform: translateY(-14px) rotate(2deg); }
-        }
-
-        /* Spinning badges */
-        .lab-badge {
-            position: absolute;
-            width: 66px;
-            height: 66px;
-            border-radius: 50%;
-            border: 2px solid #FFFDF9;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 8.5px;
-            letter-spacing: 0.4px;
-            line-height: 1.25;
-            padding: 5px;
-            z-index: 3;
-            transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        .lab-badge.hidden { opacity: 0; transform: scale(0.5) !important; }
-
-        .badge-millets {
-            background: #FF4B5C;
-            top: -8%;
-            left: -16%;
-            animation: spin 8s linear infinite;
-        }
-        .badge-sugar {
-            background: #0c152b;
-            border-color: rgba(255,255,255,0.5);
-            bottom: 4%;
-            right: -18%;
-            animation: spin 11s linear infinite reverse;
-        }
-        .badge-grains {
-            background: #FFC045;
-            color: #0A1128;
-            border-color: #0A1128;
-            top: 38%;
-            right: -20%;
-            animation: spin 14s linear infinite;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* ─── RIGHT: CONTROLS ─── */
-        .lab-controls {
-            width: 200px;
-            background: rgba(12, 21, 43, 0.95);
-            border-left: 1px solid rgba(255, 255, 255, 0.07);
-            padding: 18px 14px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            overflow-y: auto;
-        }
-
-        .ctrl-header {
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(255,255,255,0.07);
-        }
-        .ctrl-leds {
-            display: flex;
-            gap: 5px;
-            margin-bottom: 8px;
-        }
-        .ctrl-led {
-            width: 7px; height: 7px;
-            border-radius: 50%;
-            background: #222;
-        }
-        .ctrl-led.r { background: #FF4B5C; box-shadow: 0 0 5px #FF4B5C; }
-        .ctrl-led.g { transition: all 0.2s; }
-        .ctrl-led.g.lit { background: #44ff88; box-shadow: 0 0 5px #44ff88; }
-        .ctrl-led.y { transition: all 0.2s; }
-        .ctrl-led.y.lit { background: #FFC045; box-shadow: 0 0 5px #FFC045; }
-
-        .ctrl-title {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 11px;
-            letter-spacing: 2px;
-            color: rgba(255,255,255,0.6);
-        }
-
-        .ctrl-label {
-            font-size: 8px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            color: rgba(255,255,255,0.35);
-            text-transform: uppercase;
-            margin-bottom: 8px;
-        }
-
-        /* Color buttons */
-        .color-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 5px;
-        }
-        .color-btn {
-            border: 1.5px solid transparent;
-            border-radius: 3px;
-            padding: 7px 4px;
-            font-family: 'Inter', sans-serif;
-            font-size: 8px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: border-color 0.15s, transform 0.1s;
-            text-align: center;
-        }
-        .color-btn:active { transform: scale(0.93); }
-        .color-btn.active { border-color: #FFFDF9; }
-
-        /* Toggle list */
-        .toggle-list { display: flex; flex-direction: column; gap: 5px; }
-        .toggle-btn {
-            background: transparent;
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 3px;
-            padding: 7px 8px;
-            color: rgba(255,255,255,0.4);
-            font-family: 'Inter', sans-serif;
-            font-size: 8px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            transition: all 0.2s;
-        }
-        .toggle-btn .dot {
-            width: 5px; height: 5px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.2);
-            flex-shrink: 0;
-            transition: all 0.2s;
-        }
-        .toggle-btn.active {
-            border-color: rgba(255, 75, 92, 0.5);
-            color: #FFFDF9;
-            background: rgba(255,75,92,0.07);
-        }
-        .toggle-btn.active .dot {
-            background: #FF4B5C;
-            box-shadow: 0 0 5px #FF4B5C;
-        }
-
-        /* Flavor buttons */
-        .flavor-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 5px;
-        }
-        .flavor-btn {
-            background: transparent;
-            border: 1px solid rgba(255,255,255,0.12);
-            border-radius: 3px;
-            padding: 8px 4px;
-            color: rgba(255,255,255,0.4);
-            font-family: 'Inter', sans-serif;
-            font-size: 8px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-align: center;
-            line-height: 1.4;
-        }
-        .flavor-btn.active {
-            border-color: #FFFDF9;
-            color: #FFFDF9;
-            background: rgba(255,255,255,0.04);
-        }
-
-        /* Logo at bottom */
-        .ctrl-logo {
-            margin-top: auto;
-            padding-top: 12px;
-            border-top: 1px solid rgba(255,255,255,0.07);
-        }
-        .ctrl-logo img {
-            width: 90px;
-            opacity: 0.55;
-            filter: brightness(2);
-        }
-        .ctrl-logo-sub {
-            font-size: 7px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            color: rgba(255,255,255,0.2);
-            margin-top: 4px;
-        }
-    </style>
-</head>
-<body>
-    <div class="lab-bg"></div>
-
-    <div class="lab-wrap">
-
-        <!-- Package preview -->
-        <div class="lab-preview">
-            <div class="lab-canvas" id="labCanvas">
-                <div class="lab-canvas-grid"></div>
-
-                <div class="lab-badge badge-millets" id="badgeMillets">MIGHTY<br>MILLETS</div>
-                <div class="lab-badge badge-sugar" id="badgeSugar">NO<br>REFINED<br>SUGAR</div>
-                <div class="lab-badge badge-grains" id="badgeGrains">100%<br>WHOLE<br>GRAINS</div>
-
-                <img src="yogabar/blue package.webp" id="pkgImg" class="lab-pkg" alt="Yogabar Package">
-            </div>
-        </div>
-
-        <!-- Controls -->
-        <div class="lab-controls">
-            <div class="ctrl-header">
-                <div class="ctrl-leds">
-                    <div class="ctrl-led r"></div>
-                    <div class="ctrl-led g" id="ledG"></div>
-                    <div class="ctrl-led y" id="ledY"></div>
-                </div>
-                <div class="ctrl-title">VIBE CONTROLLER V1.0</div>
-            </div>
-
-            <div>
-                <div class="ctrl-label">1. BACKDROP</div>
-                <div class="color-grid">
-                    <button class="color-btn active" data-color="navy"   style="background:#0c152b; color:#FFFDF9;">NAVY</button>
-                    <button class="color-btn"        data-color="coral"  style="background:#FF4B5C; color:#FFFDF9;">CORAL</button>
-                    <button class="color-btn"        data-color="cream"  style="background:#FFFDF9; color:#0c152b;">CREAM</button>
-                    <button class="color-btn"        data-color="gold"   style="background:#FFC045; color:#0c152b;">GOLD</button>
-                </div>
-            </div>
-
-            <div>
-                <div class="ctrl-label">2. RETRO CLAIMS</div>
-                <div class="toggle-list">
-                    <button class="toggle-btn active" data-badge="badgeMillets"><span class="dot"></span>MIGHTY MILLETS</button>
-                    <button class="toggle-btn active" data-badge="badgeSugar"><span class="dot"></span>NO REFINED SUGAR</button>
-                    <button class="toggle-btn active" data-badge="badgeGrains"><span class="dot"></span>100% WHOLE GRAINS</button>
-                </div>
-            </div>
-
-            <div>
-                <div class="ctrl-label">3. FLAVOR PACK</div>
-                <div class="flavor-grid">
-                    <button class="flavor-btn active" data-flavor="blue">BLUE<br>PACK</button>
-                    <button class="flavor-btn"        data-flavor="yellow">YELLOW<br>PACK</button>
-                </div>
-            </div>
-
-            <div class="ctrl-logo">
-                <img src="yogabar/logo red and white.webp" alt="Yogabar" onerror="this.style.display='none'">
-                <div class="ctrl-logo-sub">MILLET MUESLI REDESIGN</div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const canvas  = document.getElementById('labCanvas');
-        const pkgImg  = document.getElementById('pkgImg');
-        const ledG    = document.getElementById('ledG');
-        const ledY    = document.getElementById('ledY');
-
-        const BG = { navy:'#0c152b', coral:'#FF4B5C', cream:'#FFFDF9', gold:'#FFC045' };
-
-        function flash(led) {
-            led.classList.add('lit');
-            setTimeout(() => led.classList.remove('lit'), 350);
-        }
-
-        // Color
-        document.querySelectorAll('.color-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                canvas.style.backgroundColor = BG[btn.dataset.color] || BG.navy;
-                flash(ledG);
-            });
-        });
-
-        // Badge toggles
-        document.querySelectorAll('.toggle-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                btn.classList.toggle('active');
-                const badge = document.getElementById(btn.dataset.badge);
-                if (badge) badge.classList.toggle('hidden');
-                flash(ledY);
-            });
-        });
-
-        // Flavor swap
-        document.querySelectorAll('.flavor-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.flavor-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                pkgImg.style.opacity = '0';
-                setTimeout(() => {
-                    pkgImg.src = btn.dataset.flavor === 'yellow'
-                        ? 'yogabar/yellow package.webp'
-                        : 'yogabar/blue package.webp';
-                    pkgImg.style.opacity = '1';
-                }, 220);
-                flash(ledG);
-                flash(ledY);
-            });
-        });
-    </script>
-</body>
-</html>
-`;
-
-// ===== DYNAMIC IFRAME INJECTION =====
-window.addEventListener('load', () => {
-    const iframe = document.getElementById('yogabar-iframe');
-    if (iframe) {
-        try {
-            const doc = iframe.contentDocument || iframe.contentWindow.document;
-            doc.open();
-            doc.write(YOGABAR_LAB_HTML);
-            doc.close();
-        } catch (e) {
-            console.error('Failed to inject iframe content:', e);
-        }
-    }
-});
 
 // ===== RETRO VIBE CUSTOMIZER SYSTEM =====
 (function initRetroCustomizer() {
@@ -1306,3 +963,379 @@ window.addEventListener('load', () => {
         if (e.key === 'Escape' && world.classList.contains('is-active')) close();
     });
 })();
+
+/* ===============================================================
+   AMAZING PASS · scroll signal, gotham rain + lightning,
+   decrypt labels, bat-flock easter egg
+   =============================================================== */
+
+// ===== SCROLL SIGNAL BAR =====
+(function initScrollSignal() {
+    const bar = document.createElement('div');
+    bar.className = 'scroll-signal';
+    bar.innerHTML = '<div class="scroll-signal__fill"></div>';
+    document.body.appendChild(bar);
+    const fill = bar.firstElementChild;
+
+    let ticking = false;
+    function update() {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const p = max > 0 ? (window.scrollY / max) * 100 : 0;
+        fill.style.width = p + '%';
+        ticking = false;
+    }
+    window.addEventListener('scroll', () => {
+        if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    update();
+})();
+
+// ===== GOTHAM RAIN + LIGHTNING (hero) =====
+(function initGothamWeather() {
+    const hero = document.getElementById('hero');
+    if (!hero) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    // Lightning overlay
+    const lightning = document.createElement('div');
+    lightning.className = 'hero__lightning';
+    lightning.setAttribute('aria-hidden', 'true');
+    hero.insertBefore(lightning, hero.firstChild);
+
+    // Rain canvas
+    const canvas = document.createElement('canvas');
+    canvas.className = 'hero__rain';
+    canvas.setAttribute('aria-hidden', 'true');
+    hero.insertBefore(canvas, hero.querySelector('.hero__content'));
+    const ctx = canvas.getContext('2d');
+
+    function resize() {
+        canvas.width = hero.offsetWidth;
+        canvas.height = hero.offsetHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+
+    const COUNT = window.innerWidth < 768 ? 45 : 110;
+    const WIND = -0.9; // slight leftward drift
+    function makeDrop() {
+        const z = Math.random();            // depth: 0 far, 1 near
+        return {
+            x: Math.random() * (canvas.width + 200),
+            y: Math.random() * canvas.height,
+            len: 8 + z * 18,
+            speed: 7 + z * 11,
+            alpha: 0.05 + z * 0.22,
+            z
+        };
+    }
+    let drops = Array.from({ length: COUNT }, makeDrop);
+
+    let heroVisible = true;
+    new IntersectionObserver(entries => {
+        heroVisible = entries[0].isIntersecting;
+    }).observe(hero);
+
+    function tick() {
+        if (heroVisible && !document.hidden) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.lineCap = 'round';
+            drops.forEach(d => {
+                ctx.beginPath();
+                ctx.moveTo(d.x, d.y);
+                ctx.lineTo(d.x + WIND * (d.len / 12), d.y + d.len);
+                ctx.lineWidth = 0.6 + d.z;
+                ctx.strokeStyle = `rgba(190,205,230,${d.alpha})`;
+                ctx.stroke();
+                d.y += d.speed;
+                d.x += WIND;
+                if (d.y > canvas.height + d.len) {
+                    d.y = -d.len - Math.random() * 40;
+                    d.x = Math.random() * (canvas.width + 200);
+                }
+                if (d.x < -20) d.x = canvas.width + 10;
+            });
+        }
+        requestAnimationFrame(tick);
+    }
+    tick();
+
+    // Lightning scheduler — random distant flashes
+    (function scheduleFlash() {
+        const wait = 2500 + Math.random() * 4000;
+        setTimeout(() => {
+            if (heroVisible && !document.hidden && !document.body.classList.contains('retro-vibe-active')) {
+                lightning.classList.remove('flash');
+                void lightning.offsetWidth;
+                lightning.classList.add('flash');
+            }
+            scheduleFlash();
+        }, wait);
+    })();
+})();
+
+// ===== SECTION LABEL DECRYPT =====
+(function initDecryptLabels() {
+    const labels = document.querySelectorAll('.section__label');
+    if (!labels.length) return;
+    const CHARS = '█▓▒░<>/\|#@$%&01';
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function decrypt(el) {
+        const original = el.textContent;
+        const total = original.length;
+        let frame = 0;
+        const framesPerChar = 2;
+        function step() {
+            const resolved = Math.floor(frame / framesPerChar);
+            let out = '';
+            for (let i = 0; i < total; i++) {
+                if (i < resolved || original[i] === ' ') out += original[i];
+                else out += CHARS[Math.floor(Math.random() * CHARS.length)];
+            }
+            el.textContent = out;
+            frame++;
+            if (resolved < total) requestAnimationFrame(step);
+            else el.textContent = original;
+        }
+        step();
+    }
+
+    const obs = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            obs.unobserve(entry.target);
+            if (!reduced) decrypt(entry.target);
+        });
+    }, { threshold: 0.4 });
+    labels.forEach(l => obs.observe(l));
+})();
+
+// ===== BAT-FLOCK EASTER EGG (type "batman") =====
+(function initBatFlock() {
+    let buffer = '';
+    let active = false;
+
+    function release() {
+        if (active) return;
+        active = true;
+
+        const signal = document.createElement('div');
+        signal.className = 'bat-signal-flash';
+        document.body.appendChild(signal);
+
+        const flock = document.createElement('div');
+        flock.className = 'bat-flock';
+        const n = 14;
+        for (let i = 0; i < n; i++) {
+            const bat = document.createElement('img');
+            bat.src = 'batman%20logo.webp';
+            bat.alt = '';
+            bat.className = 'bat-flock__bat';
+            bat.style.setProperty('--bt', (4 + Math.random() * 72) + '%');
+            bat.style.setProperty('--bs', Math.round(24 + Math.random() * 44) + 'px');
+            bat.style.setProperty('--bd', (2.6 + Math.random() * 2.6).toFixed(2) + 's');
+            bat.style.setProperty('--bdel', (Math.random() * 1.4).toFixed(2) + 's');
+            bat.style.setProperty('--bw', Math.round(30 + Math.random() * 90) + 'px');
+            flock.appendChild(bat);
+        }
+        document.body.appendChild(flock);
+
+        setTimeout(() => {
+            flock.remove();
+            signal.remove();
+            active = false;
+        }, 7000);
+    }
+
+    document.addEventListener('keydown', e => {
+        if (e.key.length !== 1) return;
+        buffer = (buffer + e.key.toLowerCase()).slice(-6);
+        if (buffer === 'batman') { buffer = ''; release(); }
+    });
+
+    console.log('%c🦇 I am vengeance. I am the night. Type "batman" anywhere...', 'color:#f5c518;font-family:monospace;font-size:12px;background:#0a0a0a;padding:6px 10px;border-radius:4px;');
+})();
+
+// ===== INTERACTIVE WORLDS PORTAL CARDS =====
+(function initWorldCards() {
+    // Whole card is clickable — delegate to its button
+    document.querySelectorAll('.world-card').forEach(card => {
+        card.addEventListener('click', e => {
+            if (e.target.closest('button')) return;
+            const btn = card.querySelector('.world-card__btn');
+            if (btn) btn.click();
+        });
+    });
+})();
+
+// ===== FEATURED SLIDES · blurred backdrop fill (fixed-height media box) =====
+document.querySelectorAll('.work__featured-img[data-src]').forEach(el => {
+    el.style.setProperty('--featured-bg', `url("${el.dataset.src}")`);
+});
+
+
+/* ===============================================================
+   INTERACTIVITY PASS · tron cursor trail + click sparks,
+   spotlight cards, hero parallax, more magnetic buttons
+   =============================================================== */
+
+// ===== TRON CURSOR TRAIL + CLICK SPARKS =====
+(function initTronTrail() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!window.matchMedia('(pointer: fine)').matches) return; // mouse only
+
+    const canvas = document.createElement('canvas');
+    canvas.className = 'tron-trail';
+    canvas.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+
+    const LIFE = 450;          // trail segment lifetime (ms)
+    const points = [];         // {x, y, t}
+    const sparks = [];         // {x, y, vx, vy, life, t}
+
+    window.addEventListener('mousemove', e => {
+        const last = points[points.length - 1];
+        // interpolate fast moves so the ribbon stays continuous
+        if (last && performance.now() - last.t < 80) {
+            const dx = e.clientX - last.x, dy = e.clientY - last.y;
+            const dist = Math.hypot(dx, dy);
+            const steps = Math.min(6, Math.floor(dist / 24));
+            for (let i = 1; i <= steps; i++) {
+                points.push({ x: last.x + dx * i / (steps + 1), y: last.y + dy * i / (steps + 1), t: performance.now() });
+            }
+        }
+        points.push({ x: e.clientX, y: e.clientY, t: performance.now() });
+        if (points.length > 400) points.splice(0, points.length - 400);
+    }, { passive: true });
+
+    window.addEventListener('pointerdown', e => {
+        const n = 12;
+        for (let i = 0; i < n; i++) {
+            const a = (Math.PI * 2 * i) / n + Math.random() * 0.5;
+            const v = 2 + Math.random() * 3.5;
+            sparks.push({
+                x: e.clientX, y: e.clientY,
+                vx: Math.cos(a) * v, vy: Math.sin(a) * v - 1,
+                life: 500 + Math.random() * 300,
+                t: performance.now()
+            });
+        }
+    }, { passive: true });
+
+    function colors() {
+        // coral in retro mode, gold in the batcave
+        return document.body.classList.contains('retro-vibe-active')
+            ? { glow: '255,75,92', core: '255,220,225' }
+            : { glow: '245,197,24', core: '255,246,200' };
+    }
+
+    function draw() {
+        const now = performance.now();
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // prune
+        while (points.length && now - points[0].t > LIFE) points.shift();
+        for (let i = sparks.length - 1; i >= 0; i--) {
+            if (now - sparks[i].t > sparks[i].life) sparks.splice(i, 1);
+        }
+
+        const c = colors();
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+
+        // trail ribbon: outer glow pass + bright core pass
+        if (points.length > 1) {
+            for (let pass = 0; pass < 2; pass++) {
+                for (let i = 1; i < points.length; i++) {
+                    const p0 = points[i - 1], p1 = points[i];
+                    const age = (now - p1.t) / LIFE;         // 0 fresh → 1 dead
+                    const fade = 1 - age;
+                    if (fade <= 0) continue;
+                    ctx.beginPath();
+                    ctx.moveTo(p0.x, p0.y);
+                    ctx.lineTo(p1.x, p1.y);
+                    if (pass === 0) {
+                        ctx.strokeStyle = `rgba(${c.glow},${(fade * 0.28).toFixed(3)})`;
+                        ctx.lineWidth = 9 * fade;
+                    } else {
+                        ctx.strokeStyle = `rgba(${c.core},${(fade * 0.9).toFixed(3)})`;
+                        ctx.lineWidth = 2.4 * fade;
+                    }
+                    ctx.stroke();
+                }
+            }
+        }
+
+        // click sparks
+        sparks.forEach(s => {
+            const age = (now - s.t) / s.life;
+            const fade = 1 - age;
+            s.x += s.vx; s.y += s.vy;
+            s.vy += 0.11;              // slight gravity
+            s.vx *= 0.985; s.vy *= 0.985;
+            ctx.beginPath();
+            ctx.moveTo(s.x, s.y);
+            ctx.lineTo(s.x - s.vx * 2.2, s.y - s.vy * 2.2);
+            ctx.strokeStyle = `rgba(${c.glow},${(fade * 0.9).toFixed(3)})`;
+            ctx.lineWidth = 1.6 * fade + 0.4;
+            ctx.stroke();
+        });
+
+        ctx.globalCompositeOperation = 'source-over';
+        requestAnimationFrame(draw);
+    }
+    draw();
+})();
+
+// ===== SPOTLIGHT CARDS (perks, xp, finale, terminals) =====
+(function initSpotlightCards() {
+    const els = document.querySelectorAll('.perk, .xp__info, .finale__card, .lang-card');
+    els.forEach(el => {
+        el.classList.add('spot-card');
+        el.addEventListener('mousemove', e => {
+            const r = el.getBoundingClientRect();
+            el.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+            el.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+        }, { passive: true });
+    });
+})();
+
+// ===== HERO PARALLAX (title drifts against the cursor) =====
+(function initHeroParallax() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const hero = document.getElementById('hero');
+    const content = hero && hero.querySelector('.hero__content');
+    if (!content) return;
+    hero.addEventListener('mousemove', e => {
+        const r = hero.getBoundingClientRect();
+        const nx = (e.clientX - r.left) / r.width - 0.5;   // -0.5 … 0.5
+        const ny = (e.clientY - r.top) / r.height - 0.5;
+        content.style.setProperty('--hpx', (-nx).toFixed(3));
+        content.style.setProperty('--hpy', (-ny).toFixed(3));
+    }, { passive: true });
+    hero.addEventListener('mouseleave', () => {
+        content.style.setProperty('--hpx', 0);
+        content.style.setProperty('--hpy', 0);
+    });
+})();
+
+// ===== MAGNETIC: extend to carousel arrows + declassify button =====
+document.querySelectorAll('.featured-btn, .work__more, .term-deck__arrow').forEach(el => {
+    el.addEventListener('mousemove', e => {
+        const r = el.getBoundingClientRect();
+        const x = e.clientX - r.left - r.width / 2;
+        const y = e.clientY - r.top - r.height / 2;
+        el.style.transform = `translate(${x * 0.25}px, ${y * 0.3}px)`;
+    });
+    el.addEventListener('mouseleave', () => { el.style.transform = ''; });
+});

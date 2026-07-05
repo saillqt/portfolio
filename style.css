@@ -1298,9 +1298,21 @@ nav.scrolled{background:rgba(10,10,10,.95);border-bottom-color:rgba(245,197,24,.
   border:1px solid rgba(245,197,24,.2);
   transform-style:preserve-3d;transition:transform .4s;
   align-self:start;
+  /* fixed height so slides never resize the section */
+  height:min(520px,60vh);
+  background:#000;
+}
+/* blurred echo of the artwork fills the letterbox space */
+.work__featured-img::before{
+  content:'';position:absolute;inset:0;
+  background-image:var(--featured-bg);
+  background-size:cover;background-position:center;
+  filter:blur(26px) brightness(.35) saturate(1.1);
+  transform:scale(1.25);
 }
 .work__featured-img img{
-  width:100%;height:auto;display:block;
+  position:relative;z-index:1;
+  width:100%;height:100%;object-fit:contain;display:block;
   transition:transform .8s, opacity .6s ease, filter .6s ease
 }
 .work__featured-img:not(.loaded) img{opacity:0;filter:blur(8px)}
@@ -1323,7 +1335,7 @@ nav.scrolled{background:rgba(10,10,10,.95);border-bottom-color:rgba(245,197,24,.
 .about__photo-wrap:not(.loaded) .about__photo{opacity:0!important;filter:blur(8px) grayscale(1) contrast(1.2) brightness(0.8)}
 .about__photo-wrap.loaded .about__photo{opacity:0.8;filter:grayscale(1) contrast(1.2) brightness(0.8)}
 .work__featured-badge{
-  position:absolute;top:12px;left:12px;
+  position:absolute;top:12px;left:12px;z-index:2;
   background:var(--yellow);color:var(--bg);
   font-family:var(--font-pixel);font-size:.45rem;letter-spacing:2px;
   padding:6px 10px;border-radius:3px;
@@ -1357,21 +1369,29 @@ nav.scrolled{background:rgba(10,10,10,.95);border-bottom-color:rgba(245,197,24,.
   color:var(--yellow);opacity:.6;
 }
 
-/* Featured Carousel */
-.work__featured-carousel{
-  position: relative;
+/* Featured Carousel — slides stack in one grid cell so the
+   section keeps the height of the tallest slide (no jump) */
+.work__featured-deck{
+  display:grid;
 }
-.work__featured-slide{
-  display: none;
-  animation: fadeSlide .5s ease forwards;
+.work__featured-deck .work__featured-slide{
+  grid-area:1/1;
+  display:flex;
+  align-items:center;
+  visibility:hidden;
+  opacity:0;
+  transform:translateY(10px);
+  transition:opacity .5s ease, transform .5s ease, visibility 0s linear .5s;
+  pointer-events:none;
 }
-.work__featured-slide.active{
-  display: block;
+.work__featured-deck .work__featured-slide.active{
+  visibility:visible;
+  opacity:1;
+  transform:none;
+  transition:opacity .5s ease, transform .5s ease, visibility 0s;
+  pointer-events:auto;
 }
-@keyframes fadeSlide {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+.work__featured-deck .work__featured-grid{width:100%}
 
 .work__featured-controls{
   display: flex;
@@ -2162,4 +2182,312 @@ body.retro-vibe-active .batman-vibe-restore{display:none !important}
 
 @media (prefers-reduced-motion: reduce){
     .ll-shutter{ transition:transform .01s linear; }
+}
+
+/* ===============================================================
+   AMAZING PASS · scroll signal, gotham rain, decrypt labels,
+   lightning, bat-flock easter egg
+   =============================================================== */
+
+/* --- Scroll progress ("signal strength") bar --- */
+.scroll-signal{
+  position:fixed;top:0;left:0;right:0;height:3px;
+  z-index:10001;pointer-events:none;
+  background:rgba(255,255,255,.04);
+}
+.scroll-signal__fill{
+  height:100%;width:0%;
+  background:linear-gradient(90deg,var(--yellow) 0%,var(--yellow2) 100%);
+  box-shadow:0 0 12px rgba(245,197,24,.8),0 0 4px rgba(245,197,24,.9);
+  transition:width .08s linear;
+}
+body.retro-vibe-active .scroll-signal{display:none}
+
+/* --- Gotham rain canvas (hero) --- */
+.hero__rain{
+  position:absolute;inset:0;
+  pointer-events:none;z-index:1;
+  opacity:.55;
+}
+
+/* --- Lightning flash overlay (hero) --- */
+.hero__lightning{
+  position:absolute;inset:0;
+  pointer-events:none;z-index:0;
+  background:
+    radial-gradient(ellipse 70% 55% at 68% 12%,rgba(210,225,255,.9) 0%,rgba(160,190,255,.35) 35%,transparent 70%);
+  opacity:0;
+}
+.hero__lightning.flash{animation:lightningFlash .9s ease-out}
+@keyframes lightningFlash{
+  0%{opacity:0}
+  6%{opacity:.85}
+  12%{opacity:.1}
+  20%{opacity:.6}
+  30%{opacity:.05}
+  38%{opacity:.25}
+  100%{opacity:0}
+}
+
+/* --- Section label decrypt --- */
+.section__label{white-space:pre}
+
+/* --- Bat flock easter egg --- */
+.bat-flock{
+  position:fixed;inset:0;z-index:10002;
+  pointer-events:none;overflow:hidden;
+}
+.bat-flock__bat{
+  position:absolute;left:-80px;
+  width:var(--bs,42px);
+  filter:brightness(0) saturate(100%) invert(78%) sepia(64%) saturate(1842%) hue-rotate(5deg) brightness(100%) contrast(94%);
+  opacity:.9;
+  animation:batFly var(--bd,3s) linear forwards;
+  animation-delay:var(--bdel,0s);
+  top:var(--bt,50%);
+}
+@keyframes batFly{
+  0%{transform:translateX(0) translateY(0) scale(.6) rotate(-8deg);opacity:0}
+  8%{opacity:.95}
+  25%{transform:translateX(28vw) translateY(calc(var(--bw,60px) * -1)) scale(.85) rotate(6deg)}
+  50%{transform:translateX(55vw) translateY(var(--bw,60px)) scale(1) rotate(-6deg)}
+  75%{transform:translateX(82vw) translateY(calc(var(--bw,60px) * -.7)) scale(.9) rotate(5deg)}
+  100%{transform:translateX(115vw) translateY(0) scale(.7) rotate(-4deg);opacity:0}
+}
+.bat-signal-flash{
+  position:fixed;inset:0;z-index:10001;pointer-events:none;
+  background:radial-gradient(circle at 50% 38%,rgba(245,197,24,.5) 0%,rgba(245,197,24,.15) 30%,transparent 62%);
+  opacity:0;
+  animation:signalFlash 2.6s ease-in-out forwards;
+}
+@keyframes signalFlash{
+  0%{opacity:0}
+  18%{opacity:1}
+  70%{opacity:.75}
+  100%{opacity:0}
+}
+
+@media (prefers-reduced-motion: reduce){
+  .hero__rain,.hero__lightning{display:none}
+  .bat-flock__bat{animation-duration:.01s}
+}
+
+/* ===============================================================
+   CASE FILES REVAMP · declassify pagination, tab counts,
+   interactive worlds portal cards
+   =============================================================== */
+
+/* --- Filter tab counts --- */
+.work__filter-count{
+  display:inline-block;margin-left:8px;
+  font-size:.72em;opacity:.45;letter-spacing:0;
+}
+.work__filter.active .work__filter-count{opacity:.8}
+
+/* --- Declassify more button --- */
+.work__more-wrap{display:flex;justify-content:center;margin-top:56px}
+.work__more{
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  background:transparent;
+  border:1px solid rgba(245,197,24,.45);
+  color:var(--yellow);
+  font-family:var(--font-pixel);
+  padding:20px 42px;
+  cursor:pointer;
+  letter-spacing:2px;
+  transition:all .25s ease;
+  position:relative;
+}
+.work__more::before{
+  content:'▼';font-size:.6rem;
+  position:absolute;top:-18px;left:50%;transform:translateX(-50%);
+  opacity:.5;animation:moreBounce 1.6s ease-in-out infinite;
+}
+@keyframes moreBounce{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,5px)}}
+.work__more-label{font-size:.7rem}
+.work__more-count{
+  font-family:var(--font-body);font-weight:600;
+  font-size:.8rem;letter-spacing:3px;color:var(--gray);
+}
+.work__more:hover{
+  background:var(--yellow);color:var(--bg);
+  box-shadow:0 0 30px rgba(245,197,24,.35);
+}
+.work__more:hover .work__more-count{color:var(--bg)}
+
+/* --- Interactive worlds --- */
+.worlds{padding:110px 5%}
+.worlds__head{text-align:center;margin-bottom:60px}
+.worlds__grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:34px;
+  max-width:1340px;margin:0 auto;
+}
+@media(max-width:900px){.worlds__grid{grid-template-columns:1fr}}
+
+.world-card{
+  position:relative;overflow:hidden;
+  border-radius:22px;
+  min-height:540px;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  cursor:pointer;
+  transition:transform .4s cubic-bezier(.2,.8,.25,1),box-shadow .4s ease;
+}
+.world-card:hover{transform:translateY(-10px)}
+
+/* Yogabar — cream/coral retro */
+.world-card--yogabar{
+  background:#FFFDF9;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+.world-card--yogabar:hover{box-shadow:0 30px 80px rgba(255,75,92,.28)}
+.world-card__checker{
+  position:absolute;inset:0 0 auto 0;height:52%;
+  background:
+    repeating-conic-gradient(#FF4B5C 0% 25%,#FFFDF9 0% 50%);
+  background-size:56px 56px;
+  opacity:.95;
+  -webkit-mask-image:linear-gradient(180deg,#000 55%,transparent 100%);
+          mask-image:linear-gradient(180deg,#000 55%,transparent 100%);
+}
+.world-card__stage{
+  position:absolute;top:6%;left:0;right:0;height:56%;
+  display:flex;align-items:center;justify-content:center;
+  pointer-events:none;
+}
+.world-card__pack{
+  width:38%;max-width:230px;
+  filter:drop-shadow(0 18px 30px rgba(0,0,0,.35));
+  transition:transform .5s cubic-bezier(.2,.8,.25,1);
+}
+.world-card__pack--l{transform:rotate(-8deg) translateX(8%)}
+.world-card__pack--r{transform:rotate(7deg) translateX(-8%) translateY(6%)}
+.world-card--yogabar:hover .world-card__pack--l{transform:rotate(-11deg) translateX(4%) translateY(-4%) scale(1.04)}
+.world-card--yogabar:hover .world-card__pack--r{transform:rotate(10deg) translateX(-4%) translateY(2%) scale(1.04)}
+
+/* LoveLocal — magenta shutter / mandi yellow */
+.world-card--lovelocal{
+  background:linear-gradient(180deg,#7c0c4e 0%,#5a0c3b 100%);
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+.world-card--lovelocal:hover{box-shadow:0 30px 80px rgba(255,196,0,.22)}
+.world-card__stripes{
+  position:absolute;inset:0 0 auto 0;height:52%;
+  background:repeating-linear-gradient(180deg,rgba(255,255,255,.07) 0 14px,transparent 14px 30px);
+  -webkit-mask-image:linear-gradient(180deg,#000 55%,transparent 100%);
+          mask-image:linear-gradient(180deg,#000 55%,transparent 100%);
+}
+.world-card__bag{
+  width:52%;max-width:300px;
+  border-radius:12px;
+  filter:drop-shadow(0 18px 30px rgba(0,0,0,.45));
+  transform:rotate(-3deg);
+  transition:transform .5s cubic-bezier(.2,.8,.25,1);
+}
+.world-card--lovelocal:hover .world-card__bag{transform:rotate(-1deg) translateY(-6px) scale(1.03)}
+
+/* Shared info block */
+.world-card__info{
+  position:relative;z-index:2;
+  padding:34px 38px 38px;
+  display:flex;flex-direction:column;gap:14px;align-items:flex-start;
+}
+.world-card--yogabar .world-card__info{
+  background:linear-gradient(180deg,transparent 0%,#FFFDF9 26%);
+  color:#1A2A4A;
+}
+.world-card--lovelocal .world-card__info{
+  background:linear-gradient(180deg,transparent 0%,rgba(40,4,26,.92) 30%);
+  color:#FFFDF9;
+}
+.world-card__kicker{
+  font-family:var(--font-pixel);font-size:.55rem;letter-spacing:2px;
+}
+.world-card--yogabar .world-card__kicker{color:#FF4B5C}
+.world-card--lovelocal .world-card__kicker{color:#FFC400}
+.world-card__title{
+  font-family:'Fredoka',sans-serif;font-weight:700;
+  font-size:clamp(1.7rem,2.6vw,2.4rem);line-height:1.05;
+}
+.world-card__title em{
+  display:block;font-family:'DM Serif Display',serif;
+  font-style:italic;font-weight:400;font-size:.75em;opacity:.85;
+}
+.world-card__desc{
+  font-size:1.05rem;line-height:1.55;max-width:46ch;opacity:.85;
+  font-weight:500;
+}
+.world-card__btn{
+  margin-top:8px;
+  background:#FF4B5C;color:#FFFDF9;
+  border:2px solid #1A2A4A;border-radius:8px;
+  padding:15px 30px;
+  font-family:var(--font-pixel);font-size:.62rem;letter-spacing:1px;
+  cursor:pointer;
+  box-shadow:5px 5px 0 #1A2A4A;
+  transition:transform .15s ease,box-shadow .15s ease;
+}
+.world-card__btn:hover{transform:translate(2px,2px);box-shadow:3px 3px 0 #1A2A4A}
+.world-card__btn:active{transform:translate(5px,5px);box-shadow:0 0 0 #1A2A4A}
+.world-card__btn--ll{
+  background:#FFC400;color:#5a0c3b;border-color:#FFFDF9;
+  box-shadow:5px 5px 0 rgba(255,255,255,.85);
+}
+.world-card__btn--ll:hover{box-shadow:3px 3px 0 rgba(255,255,255,.85)}
+.world-card__btn--ll:active{box-shadow:0 0 0 rgba(255,255,255,.85)}
+
+/* Worlds hidden inside retro mode (retro world has its own exhibits) */
+body.retro-vibe-active .worlds{display:none}
+
+/* ===============================================================
+   INTERACTIVITY PASS · tron cursor trail, click sparks,
+   spotlight cards, xp hover, hero parallax
+   =============================================================== */
+
+/* --- Tron trail canvas --- */
+.tron-trail{
+  position:fixed;inset:0;
+  z-index:9998;pointer-events:none;
+}
+@media (prefers-reduced-motion: reduce){.tron-trail{display:none}}
+
+/* --- Spotlight treatment for previously static cards --- */
+.spot-card{position:relative;overflow:hidden}
+.spot-card::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  border-radius:inherit;
+  background:radial-gradient(420px circle at var(--mx,50%) var(--my,0%),rgba(245,197,24,.12),transparent 45%);
+  opacity:0;transition:opacity .4s;
+}
+.spot-card:hover::after{opacity:1}
+
+/* --- Perk cards: lift on hover --- */
+.perk{transition:transform .4s cubic-bezier(.2,.8,.2,1),border-color .3s,box-shadow .4s}
+.perk:hover{
+  transform:translateY(-6px);
+  box-shadow:0 18px 40px rgba(0,0,0,.5),0 0 30px rgba(245,197,24,.06);
+}
+
+/* --- XP timeline: entries respond to hover --- */
+.xp__entry{transition:transform .35s ease}
+.xp__entry:hover{transform:translateX(10px)}
+.xp__entry .xp__marker{transition:transform .3s ease,box-shadow .3s ease}
+.xp__entry:hover .xp__marker{
+  transform:scale(1.6);
+  box-shadow:0 0 18px rgba(245,197,24,.9),0 0 40px rgba(245,197,24,.35);
+}
+.xp__entry .xp__company{transition:color .3s,text-shadow .3s}
+.xp__entry:hover .xp__company{
+  color:var(--yellow);
+  text-shadow:0 0 18px rgba(245,197,24,.4);
+}
+
+/* --- Hero content parallax (JS sets --hpx / --hpy) --- */
+.hero__content{will-change:transform}
+.hero__title{
+  transform:translate(calc(var(--hpx,0)*16px),calc(var(--hpy,0)*10px));
+  transition:transform .3s cubic-bezier(.2,.8,.3,1);
+}
+.hero__sub,.hero__tagline{
+  transform:translate(calc(var(--hpx,0)*7px),calc(var(--hpy,0)*5px));
+  transition:transform .35s cubic-bezier(.2,.8,.3,1);
 }
