@@ -814,7 +814,7 @@ document.querySelectorAll('[data-tilt]').forEach(el => {
         body.style.width = '100%';
     }
 
-    function unlockAtTop() {
+    function unlockAt(y) {
         const html = document.documentElement;
         const body = document.body;
         body.style.position = '';
@@ -822,16 +822,19 @@ document.querySelectorAll('[data-tilt]').forEach(el => {
         body.style.left = '';
         body.style.right = '';
         body.style.width = '';
-        window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-        html.scrollTop = 0;
-        body.scrollTop = 0;
+        window.scrollTo({ top: y, left: 0, behavior: 'auto' });
+        html.scrollTop = y;
+        body.scrollTop = y;
     }
+
+    let batmanScrollY = 0; // where the user was on the Batman page before entering retro
 
     function runTransition(toRetro) {
         if (isTransitioning) return;
         isTransitioning = true;
 
         lockPage();
+        if (toRetro) batmanScrollY = lockedScrollY;
         overlay.className = 'transition-overlay';
         if (!toRetro) {
             overlay.classList.add('batman-color');
@@ -848,9 +851,11 @@ document.querySelectorAll('[data-tilt]').forEach(el => {
             } else {
                 document.body.classList.remove('retro-vibe-active');
             }
-            unlockAtTop();
+            // Retro world starts at its top; returning to Batman resumes where you left off.
+            const landY = toRetro ? 0 : batmanScrollY;
+            unlockAt(landY);
             await new Promise(resolve => requestAnimationFrame(() => {
-                unlockAtTop();
+                unlockAt(landY);
                 requestAnimationFrame(resolve);
             }));
 
