@@ -20,7 +20,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Press+Start+2P&family=Creepster&family=Bagel+Fat+One&family=DM+Serif+Display:ital@0;1&family=Fredoka:wght@500;600;700&family=Amatic+SC:wght@400;700&family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=webp-1">
+    <link rel="stylesheet" href="style.css?v=exp-1">
 </head>
 <body>
 
@@ -61,6 +61,10 @@
             <li><a href="#videos" data-text="REEL">REEL</a></li>
             <li><a href="#contact" data-text="CONTACT">CONTACT</a></li>
         </ul>
+        <button class="nav__sound" id="soundToggle" type="button" aria-pressed="false" title="Batcave ambience — rain, thunder & a low score">
+            <span class="nav__sound-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+            <span class="nav__sound-label">SOUND</span>
+        </button>
         <button class="nav__burger" id="navBurger" aria-label="Toggle menu">
             <span></span><span></span><span></span>
         </button>
@@ -1343,12 +1347,12 @@
         </div>
     </section>
 
-    <!-- ============ INTERACTIVE WORLDS (YOGABAR + LOVELOCAL) ============ -->
+    <!-- ============ INTERACTIVE WORLDS (YOGABAR + LOVELOCAL + ECOBREW) ============ -->
     <section id="lovelocal" class="section section--dark worlds">
         <div class="worlds__head">
             <span class="section__label">// SPECIAL EXHIBITS</span>
             <h2 class="work__title">STEP INSIDE <span class="text--yellow">MY WORLDS</span></h2>
-            <p class="work__sub">Two full interactive case studies. Not galleries — places.</p>
+            <p class="work__sub">Three full interactive case studies. Not galleries — places.</p>
         </div>
         <div class="worlds__grid">
             <!-- Yogabar portal -->
@@ -1378,6 +1382,21 @@
                     <button class="world-card__btn world-card__btn--ll" id="llEnter" type="button">🛒 ENTER THE AISLE</button>
                 </div>
             </article>
+            <!-- EcoBrew portal -->
+            <article class="world-card world-card--ecobrew">
+                <div class="world-card__steam" aria-hidden="true"></div>
+                <div class="world-card__stage" aria-hidden="true">
+                    <img src="https://saillqt.github.io/rapyder/images/coffee_bean.png" alt="" class="world-card__bean world-card__bean--l" loading="lazy">
+                    <img src="https://saillqt.github.io/rapyder/images/hero-main.png" alt="" class="world-card__bottle" loading="lazy">
+                    <img src="https://saillqt.github.io/rapyder/images/coffee_bean.png" alt="" class="world-card__bean world-card__bean--r" loading="lazy">
+                </div>
+                <div class="world-card__info">
+                    <span class="world-card__kicker">☕ BRAND LAUNCH · LIVE DECK</span>
+                    <h3 class="world-card__title">ECOBREW <em>Good coffee. Better choices.</em></h3>
+                    <p class="world-card__desc">A cold-brew launch deck built as a website — floating bottles, a flavour switcher, and a coffee bean that rides the scroll. Presented as slides, explorable as a site.</p>
+                    <button class="world-card__btn world-card__btn--eb" id="ebEnter" type="button">☕ POUR THE COLD BREW</button>
+                </div>
+            </article>
         </div>
     </section>
 
@@ -1392,6 +1411,19 @@
                 <span class="ll-shutter__tag">★ Aao andar · खुल रहा है दुकान ★</span>
             </div>
             <div class="ll-shutter__edge"><span class="ll-shutter__lock"></span></div>
+        </div>
+    </div>
+
+    <!-- EcoBrew fullscreen world (iframe loaded on demand) + coffee-pour transition -->
+    <div id="ecobrew-world" class="ecobrew-world" aria-hidden="true">
+        <button class="eb-exit" id="ebExit" type="button">← Back to the cave</button>
+        <iframe id="ecobrew-iframe" title="EcoBrew — Cold Brew Launch Deck" src="about:blank" loading="lazy"></iframe>
+        <div class="eb-pour" id="ebPour" aria-hidden="true">
+            <div class="eb-pour__sign">
+                <span class="eb-pour__brand">EcoBrew</span>
+                <span class="eb-pour__tag">✦ Good coffee · Better choices ✦</span>
+            </div>
+            <div class="eb-pour__wave"></div>
         </div>
     </div>
 
@@ -2110,6 +2142,6 @@
         </div>
     </div>
 
-    <script src="script.js?v=webp-1"></script>
+    <script src="script.js?v=exp-1"></script>
 </body>
 </html>

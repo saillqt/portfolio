@@ -1068,6 +1068,7 @@ document.querySelectorAll('[data-tilt]').forEach(el => {
                 lightning.classList.remove('flash');
                 void lightning.offsetWidth;
                 lightning.classList.add('flash');
+                window.dispatchEvent(new CustomEvent('gotham-flash'));
             }
             scheduleFlash();
         }, wait);
@@ -1155,6 +1156,234 @@ document.querySelectorAll('[data-tilt]').forEach(el => {
     });
 
     console.log('%c🦇 I am vengeance. I am the night. Type "batman" anywhere...', 'color:#f5c518;font-family:monospace;font-size:12px;background:#0a0a0a;padding:6px 10px;border-radius:4px;');
+})();
+
+/* ===============================================================
+   ECOBREW · POUR THE COLD BREW
+   Opens the EcoBrew launch deck in a fullscreen iframe behind a
+   coffee sheet that drains upward — the cup emptying to reveal
+   the brand underneath.
+   =============================================================== */
+(function initEcoBrew() {
+    const enterBtn = document.getElementById('ebEnter');
+    const world    = document.getElementById('ecobrew-world');
+    const iframe   = document.getElementById('ecobrew-iframe');
+    const pour     = document.getElementById('ebPour');
+    const exitBtn  = document.getElementById('ebExit');
+    if (!enterBtn || !world || !iframe || !pour) return;
+
+    const SRC = 'https://saillqt.github.io/rapyder/';
+    let busy = false;
+
+    function open() {
+        if (busy || world.classList.contains('is-active')) return;
+        busy = true;
+        if (!iframe.src || iframe.src.endsWith('about:blank')) iframe.src = SRC;
+        world.classList.add('is-active');      // coffee sheet covers the screen
+        pour.classList.remove('is-drained');
+        document.body.style.overflow = 'hidden';
+        // timeout (not rAF) so the drain still runs if the tab loses visibility
+        setTimeout(() => {
+            pour.classList.add('is-drained');  // drain upward → deck revealed
+            setTimeout(() => { busy = false; }, 1900);
+        }, 60);
+    }
+
+    function close() {
+        if (busy || !world.classList.contains('is-active')) return;
+        busy = true;
+        pour.classList.remove('is-drained');   // pour the coffee back over it
+        setTimeout(() => {
+            world.classList.remove('is-active');
+            document.body.style.overflow = '';
+            iframe.src = 'about:blank';
+            busy = false;
+        }, 1800);
+    }
+
+    enterBtn.addEventListener('click', open);
+    if (exitBtn) exitBtn.addEventListener('click', close);
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && world.classList.contains('is-active')) close();
+    });
+})();
+
+/* ===============================================================
+   SCROLL-PATH BATARANG
+   A batarang that rides the scroll along a swooping flight path —
+   the EcoBrew scroll-bean, translated to Gotham. Fades in while
+   you scroll, banks into its turns, fades out when you stop.
+   =============================================================== */
+(function initScrollBatarang() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.innerWidth < 901) return;
+
+    const bat = document.createElement('img');
+    bat.src = 'batman%20logo.webp';
+    bat.alt = '';
+    bat.className = 'scroll-batarang';
+    bat.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(bat);
+
+    const SWEEPS = 5;            // horizontal passes over the full page
+    let hideTimer = null;
+    let ticking = false;
+
+    function place() {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const p = max > 0 ? window.scrollY / max : 0;
+        const vw = window.innerWidth, vh = window.innerHeight;
+
+        const x = vw * (0.5 + 0.42 * Math.sin(p * Math.PI * SWEEPS));
+        const y = vh * (0.16 + 0.66 * p) + Math.sin(p * Math.PI * 14) * 26;
+        // face the direction of travel (derivative of the path)
+        const dx = 0.42 * Math.PI * SWEEPS * Math.cos(p * Math.PI * SWEEPS) * vw;
+        const dy = 0.66 * vh + Math.cos(p * Math.PI * 14) * Math.PI * 14 * 26;
+        const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+        const bank = Math.max(-38, Math.min(38, angle * 0.4));
+
+        bat.style.transform = `translate(${x - 22}px, ${y - 22}px) rotate(${bank}deg)`;
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+        if (!ticking) { ticking = true; requestAnimationFrame(place); }
+        bat.classList.add('is-flying');
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(() => bat.classList.remove('is-flying'), 1100);
+    }, { passive: true });
+    place();
+})();
+
+/* ===============================================================
+   BATCAVE AMBIENCE · Web Audio, zero files, fully original
+   Rain hiss + a low somber drone + distant thunder that answers
+   the hero lightning. Toggled from the nav, remembered across
+   visits, ducked while inside a world.
+   =============================================================== */
+(function initBatcaveAudio() {
+    const btn = document.getElementById('soundToggle');
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!btn || !AC) { if (btn) btn.style.display = 'none'; return; }
+
+    const LEVEL = 0.85;          // master when on
+    let ctx = null, master = null;
+    let on = false;
+
+    function noiseBuffer(seconds) {
+        const len = Math.floor(ctx.sampleRate * seconds);
+        const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+        const d = buf.getChannelData(0);
+        for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+        return buf;
+    }
+
+    function build() {
+        ctx = new AC();
+        master = ctx.createGain();
+        master.gain.value = 0;
+        master.connect(ctx.destination);
+
+        // — Rain: soft band-passed noise, slowly breathing
+        const rain = ctx.createBufferSource();
+        rain.buffer = noiseBuffer(3); rain.loop = true;
+        const rainLP = ctx.createBiquadFilter();
+        rainLP.type = 'bandpass'; rainLP.frequency.value = 1500; rainLP.Q.value = 0.35;
+        const rainGain = ctx.createGain(); rainGain.gain.value = 0.045;
+        const rainLFO = ctx.createOscillator(); rainLFO.frequency.value = 0.07;
+        const rainLFOAmt = ctx.createGain(); rainLFOAmt.gain.value = 0.012;
+        rainLFO.connect(rainLFOAmt).connect(rainGain.gain);
+        rain.connect(rainLP).connect(rainGain).connect(master);
+        rain.start(); rainLFO.start();
+
+        // — Drone: low D with its fifth, detuned pair, slow swell (somber score)
+        const droneGain = ctx.createGain(); droneGain.gain.value = 0.055;
+        droneGain.connect(master);
+        [[73.42, 'sine', 0], [73.42, 'sine', 6], [110, 'sine', 0], [146.83, 'triangle', -4]].forEach(([f, type, det]) => {
+            const o = ctx.createOscillator();
+            o.type = type; o.frequency.value = f; o.detune.value = det;
+            const g = ctx.createGain(); g.gain.value = f > 120 ? 0.35 : 1;
+            o.connect(g).connect(droneGain);
+            o.start();
+        });
+        const droneLFO = ctx.createOscillator(); droneLFO.frequency.value = 0.045;
+        const droneLFOAmt = ctx.createGain(); droneLFOAmt.gain.value = 0.025;
+        droneLFO.connect(droneLFOAmt).connect(droneGain.gain);
+        droneLFO.start();
+
+        // — Thunder: filtered noise rumble with a slow envelope
+        function thunder(strength) {
+            const src = ctx.createBufferSource();
+            src.buffer = noiseBuffer(4);
+            const lp = ctx.createBiquadFilter();
+            lp.type = 'lowpass'; lp.frequency.value = 60 + Math.random() * 60;
+            const g = ctx.createGain();
+            const t = ctx.currentTime;
+            const peak = (0.4 + Math.random() * 0.5) * strength;
+            g.gain.setValueAtTime(0, t);
+            g.gain.linearRampToValueAtTime(peak, t + 0.12 + Math.random() * 0.25);
+            g.gain.exponentialRampToValueAtTime(0.001, t + 2.6 + Math.random() * 2);
+            src.connect(lp).connect(g).connect(master);
+            src.start(t);
+            src.stop(t + 5.5);
+        }
+        // thunder answers the hero lightning, a beat later (light > sound)
+        window.addEventListener('gotham-flash', () => {
+            setTimeout(() => { if (on) thunder(1); }, 400 + Math.random() * 900);
+        });
+        // …and grumbles on its own now and then, further away
+        (function grumble() {
+            setTimeout(() => {
+                if (on && !document.hidden) thunder(0.35);
+                grumble();
+            }, 16000 + Math.random() * 26000);
+        })();
+
+        // — Duck the cave while inside a world (they have their own vibe)
+        setInterval(() => {
+            if (!on) return;
+            const inWorld = document.body.classList.contains('retro-vibe-active') ||
+                document.querySelector('.lovelocal-world.is-active, .ecobrew-world.is-active');
+            const target = inWorld ? LEVEL * 0.12 : LEVEL;
+            master.gain.setTargetAtTime(target, ctx.currentTime, 0.8);
+        }, 900);
+    }
+
+    function enable() {
+        if (!ctx) build();
+        on = true;
+        btn.classList.add('is-on');
+        btn.setAttribute('aria-pressed', 'true');
+        localStorage.setItem('batcave-sound', '1');
+        const kick = () => ctx.resume().then(() => {
+            if (on) master.gain.setTargetAtTime(LEVEL, ctx.currentTime, 1.2);
+        }).catch(() => {});
+        kick();
+        // if the browser withheld audio, try again on the next real gesture
+        if (ctx.state !== 'running') {
+            document.addEventListener('pointerdown', function retry() {
+                document.removeEventListener('pointerdown', retry);
+                if (on) kick();
+            });
+        }
+    }
+
+    function disable() {
+        on = false;
+        if (master) master.gain.setTargetAtTime(0, ctx.currentTime, 0.4);
+        if (ctx) setTimeout(() => { if (!on && ctx.state === 'running') ctx.suspend(); }, 2200);
+        btn.classList.remove('is-on');
+        btn.setAttribute('aria-pressed', 'false');
+        localStorage.setItem('batcave-sound', '0');
+    }
+
+    btn.addEventListener('click', () => (on ? disable() : enable()));
+
+    // Restore preference on the first user gesture (autoplay rules need one)
+    if (localStorage.getItem('batcave-sound') === '1') {
+        const resume = () => { enable(); document.removeEventListener('pointerdown', resume); };
+        document.addEventListener('pointerdown', resume, { once: true });
+    }
 })();
 
 // ===== INTERACTIVE WORLDS PORTAL CARDS =====
