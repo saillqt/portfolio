@@ -1172,7 +1172,7 @@ document.querySelectorAll('[data-tilt]').forEach(el => {
     const exitBtn  = document.getElementById('ebExit');
     if (!enterBtn || !world || !iframe || !pour) return;
 
-    const SRC = 'https://saillqt.github.io/rapyder/';
+    const SRC = 'rapyder/index.html';
     let busy = false;
 
     function open() {

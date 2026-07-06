@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EcoBrew — Good coffee. Better choices.</title>
+  <meta name="description" content="EcoBrew Cold Brew — a coffee brand for people who want great coffee without ignoring the planet. Sip better. Choose better." />
+
+  <meta property="og:title" content="EcoBrew — Good coffee. Better choices." />
+  <meta property="og:description" content="Introducing EcoBrew Cold Brew. Smooth, refreshing, consciously made." />
+  <meta property="og:image" content="images/hero-main.png" />
+  <meta name="theme-color" content="#17140F" />
+
+  <link rel="icon" href="images/logo.png" type="image/png" />
+  <link rel="preload" href="fonts/DrukCond-Super-Trial.otf" as="font" type="font/otf" crossorigin />
+  <link rel="preload" href="fonts/Gilroy-Regular.ttf" as="font" type="font/ttf" crossorigin />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ============ Loading screen (logo fills like coffee pouring) ============ -->
+  <div class="preloader" data-preloader aria-hidden="true">
+    <div class="preloader__logo">
+      <img src="images/logo-cream.png" alt="" class="preloader__ghost" />
+      <div class="preloader__liquid"><div class="preloader__wave"></div></div>
+    </div>
+    <p class="preloader__tag">Good coffee. Better choices.</p>
+  </div>
+
+  <div class="progress" aria-hidden="true"><span></span></div>
+
+  <!-- ============ Header ============ -->
+  <header class="site-header site-header--center" data-header>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="#idea">The Idea</a>
+      <a href="#product">Product</a>
+      <a href="#why">Why EcoBrew</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#cta" class="site-nav__cta">Try EcoBrew</a>
+    </nav>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" data-menu-toggle>
+      <span></span><span></span>
+    </button>
+  </header>
+
+  <div class="drawer" data-drawer aria-hidden="true">
+    <a href="#idea">The Idea</a>
+    <a href="#product">Product</a>
+    <a href="#why">Why EcoBrew</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#cta">Try EcoBrew</a>
+  </div>
+
+  <!-- ============ Side Slide Navigation (Deck Style) ============ -->
+  <nav class="side-nav" aria-label="Slide navigation" aria-hidden="true" data-side-nav>
+    <a href="#intro" class="side-nav__item is-active" data-slide-index="0">
+      <span class="side-nav__label">Intro</span>
+      <span class="side-nav__num">01</span>
+    </a>
+    <a href="#idea" class="side-nav__item" data-slide-index="1">
+      <span class="side-nav__label">The Idea</span>
+      <span class="side-nav__num">02</span>
+    </a>
+    <a href="#product" class="side-nav__item" data-slide-index="2">
+      <span class="side-nav__label">Launch Drop</span>
+      <span class="side-nav__num">03</span>
+    </a>
+    <a href="#why" class="side-nav__item" data-slide-index="3">
+      <span class="side-nav__label">Why Us</span>
+      <span class="side-nav__num">04</span>
+    </a>
+    <a href="#gallery" class="side-nav__item" data-slide-index="4">
+      <span class="side-nav__label">Gallery</span>
+      <span class="side-nav__num">05</span>
+    </a>
+    <a href="#cta" class="side-nav__item" data-slide-index="5">
+      <span class="side-nav__label">Try EcoBrew</span>
+      <span class="side-nav__num">06</span>
+    </a>
+  </nav>
+
+  <main id="top">
+
+    <!-- ============ Hero (giant word + floating products) ============ -->
+    <section id="intro" class="hero" data-theme="amber">
+      <div class="hero__card">
+        <div class="hero__top">
+          <p class="kicker"><span></span>Eco coffee — without the leaf</p>
+          <p class="hero__topright">Cold&nbsp;Brew · Est.&nbsp;2026</p>
+        </div>
+
+        <div class="hero__stage">
+          <!-- giant background logo watermark -->
+          <h1 class="hero__word" aria-label="EcoBrew Cold Brew">
+            <img src="images/logo-deep.png" alt="EcoBrew" class="hero__word-logo" />
+          </h1>
+
+          <!-- decorative coffee beans -->
+          <img src="images/coffee_bean.png" alt="" class="bean bean--1" aria-hidden="true" />
+          <img src="images/coffee_bean.png" alt="" class="bean bean--2" aria-hidden="true" />
+          <img src="images/coffee_bean.png" alt="" id="scrollPathBean" aria-hidden="true" />
+          <img src="images/coffee_bean.png" alt="" class="bean bean--4" aria-hidden="true" />
+
+          <!-- product showcase arc -->
+          <div class="hero__products">
+            <div class="disc disc--far float-a" style="--o:center"><img src="images/hero-1.png" alt="EcoBrew cold brew" /></div>
+            <div class="disc disc--mid float-b" style="--o:center 40%"><img src="images/hero-4.png" alt="EcoBrew cold brew" /></div>
+            <div class="disc disc--main float-c"><img src="images/hero-main.png" alt="EcoBrew cold brew, featured" /></div>
+            <div class="disc disc--mid float-d" style="--o:center 35%"><img src="images/hero-3.png" alt="EcoBrew cold brew" /></div>
+            <div class="disc disc--far float-e" style="--o:center"><img src="images/hero-2.png" alt="EcoBrew cold brew" /></div>
+          </div>
+        </div>
+
+        <div class="hero__controls">
+          <div class="hero__pitch">
+            <strong>Good coffee. Better choices.</strong>
+            <span>Slow-steeped cold brew, made with a lighter footprint.</span>
+          </div>
+          <div class="hero__actions">
+            <a class="btn btn--ink" href="#cta">Shop Cold Brew
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <a class="btn btn--outline-ink" href="#idea">Our story</a>
+          </div>
+        </div>
+      </div>
+      <a href="#idea" class="scroll-cue scroll-cue--ink" aria-label="Scroll down"><span>Scroll</span></a>
+    </section>
+
+    <!-- ============ Marquee ============ -->
+    <div class="marquee" data-theme="amber" aria-hidden="true">
+      <div class="marquee__track">
+        <span>Good coffee.</span><b>✦</b><span class="outline">Better choices.</span><b>✦</b><span>Consciously made.</span><b>✦</b><span class="outline">Cold brew.</span><b>✦</b>
+        <span>Good coffee.</span><b>✦</b><span class="outline">Better choices.</span><b>✦</b><span>Consciously made.</span><b>✦</b><span class="outline">Cold brew.</span><b>✦</b>
+        <span>Good coffee.</span><b>✦</b><span class="outline">Better choices.</span><b>✦</b><span>Consciously made.</span><b>✦</b><span class="outline">Cold brew.</span><b>✦</b>
+        <span>Good coffee.</span><b>✦</b><span class="outline">Better choices.</span><b>✦</b><span>Consciously made.</span><b>✦</b><span class="outline">Cold brew.</span><b>✦</b>
+      </div>
+    </div>
+
+    <!-- ============ The Idea ============ -->
+    <section id="idea" class="section idea" data-theme="cream">
+      <div class="dots dots--tr" aria-hidden="true"></div>
+      <div class="wrap idea__grid">
+        <div class="idea__copy">
+          <p class="eyebrow reveal">01 — The idea</p>
+          <h2 class="headline idea__title reveal" style="--d:.06s">
+            Great coffee.<br /><em>Zero</em> compromise.
+          </h2>
+          <p class="lead reveal" style="--d:.12s">
+            A coffee brand for people who want great coffee without ignoring the planet. Built for
+            young, conscious drinkers — bold, warm and modern. Eco-friendly, without the tired leaf clichés.
+          </p>
+          <div class="stats reveal" style="--d:.16s">
+            <div class="stat"><span class="stat__num" data-count="12" data-suffix="H">0</span><span class="stat__label">Slow cold steep</span></div>
+            <div class="stat"><span class="stat__num" data-count="100" data-suffix="%">0</span><span class="stat__label">Recyclable bottle</span></div>
+            <div class="stat"><span class="stat__num" data-count="0">0</span><span class="stat__label">Artificial anything</span></div>
+          </div>
+        </div>
+
+        <div class="idea__media reveal" style="--d:.1s">
+          <div class="framed" data-parallax-soft></div>
+          <span class="idea__badge">Eco coffee<br />without the leaf</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Statement band ============ -->
+    <section class="statement" data-theme="cream" aria-label="Good coffee, better choices">
+      <div class="statement__dots" aria-hidden="true"></div>
+      <h2 class="statement__type reveal">Good&nbsp;coffee,<br />better&nbsp;choices.</h2>
+      <p class="statement__sub reveal" style="--d:.1s">Bold, warm &amp; modern.</p>
+    </section>
+
+    <!-- ============ Product — HARD LAUNCH ============ -->
+    <section id="product" class="section launch" data-theme="ink">
+      <div class="launch__ticker" aria-hidden="true">
+        <div class="launch__ticker-track">
+          <span>Just dropped</span><b>●</b><span>Now live</span><b>●</b><span>Batch 001</span><b>●</b><span>Shipping now</span><b>●</b>
+          <span>Just dropped</span><b>●</b><span>Now live</span><b>●</b><span>Batch 001</span><b>●</b><span>Shipping now</span><b>●</b>
+          <span>Just dropped</span><b>●</b><span>Now live</span><b>●</b><span>Batch 001</span><b>●</b><span>Shipping now</span><b>●</b>
+          <span>Just dropped</span><b>●</b><span>Now live</span><b>●</b><span>Batch 001</span><b>●</b><span>Shipping now</span><b>●</b>
+        </div>
+      </div>
+
+      <div class="wrap launch__inner">
+        <div class="launch__copy">
+          <p class="launch__eyebrow reveal"><span class="pulse"></span>Now live — the launch drop</p>
+          <h2 class="headline launch__title reveal" style="--d:.05s">THE<br /><span class="amber">DROP.</span></h2>
+          <p class="launch__name reveal" style="--d:.1s">EcoBrew Cold Brew</p>
+          <p class="launch__clingy reveal" style="--d:.14s" data-flavor-text>
+            We can't stop thinking about it. Give it one sip — neither will you.
+            Smooth, refreshing, consciously made, and honestly a little obsessed with you back.
+          </p>
+          <div class="launch__chips reveal" style="--d:.18s" data-flavor-buttons>
+            <button class="launch__chip is-active" data-flavor="classic">The Blend</button>
+            <button class="launch__chip" data-flavor="chocolate">Cacao Notes</button>
+            <button class="launch__chip" data-flavor="caramel">Caramel Hues</button>
+            <button class="launch__chip" data-flavor="steep">12H Steep</button>
+          </div>
+          <div class="launch__actions reveal" style="--d:.22s">
+            <a class="btn btn--amber" href="#cta">Shop the drop
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <span class="launch__stock">Limited first batch · going fast</span>
+          </div>
+        </div>
+
+        <div class="launch__stage reveal" style="--d:.12s" data-launch-stage>
+          <div class="launch__rays" aria-hidden="true"></div>
+          <div class="launch__glow" aria-hidden="true" data-flavor-glow></div>
+          
+          <!-- floating 3D beans -->
+          <img src="images/coffee_bean.png" alt="" class="launch__bean launch__bean--1" aria-hidden="true" />
+          <img src="images/coffee_bean.png" alt="" class="launch__bean launch__bean--2" aria-hidden="true" />
+
+          <!-- Interactive Frame containing slides -->
+          <div class="launch__frame">
+            <div class="launch__slide is-active" data-slide-flavor="classic">
+              <img src="images/tab-blend.png" alt="EcoBrew The Blend" />
+              <span class="launch__slide-tag">Classic 250ml</span>
+            </div>
+            <div class="launch__slide" data-slide-flavor="chocolate">
+              <img src="images/tab-cacao.png" alt="EcoBrew Cacao Notes" />
+              <span class="launch__slide-tag">Cacao Infused</span>
+            </div>
+            <div class="launch__slide" data-slide-flavor="caramel">
+              <img src="images/tab-caramel.png" alt="EcoBrew Caramel Hues" />
+              <span class="launch__slide-tag">Caramel Hues</span>
+            </div>
+            <div class="launch__slide" data-slide-flavor="steep">
+              <img src="images/tab-steep.png" alt="EcoBrew 12H Slow Steep" />
+              <span class="launch__slide-tag">12H Slow Steep</span>
+            </div>
+          </div>
+          <span class="launch__badge">New<br />Drop</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Why EcoBrew ============ -->
+    <section id="why" class="section why" data-theme="cream">
+      <div class="dots dots--tr" aria-hidden="true"></div>
+      <div class="wrap why__wrap">
+        
+        <!-- Left Showcase Panel (Visual Slideshow) -->
+        <div class="why__showcase reveal" style="--d:.04s">
+          <div class="showcase__frame">
+            <img src="images/why-1.png" alt="Eco-friendly packaging" class="showcase__img is-active" data-showcase-index="0" />
+            <img src="images/why-2.png" alt="Fresh cold brew taste" class="showcase__img" data-showcase-index="1" />
+            <img src="images/why-3.png" alt="Made for daily moments" class="showcase__img" data-showcase-index="2" />
+            <img src="images/why-4.png" alt="Built for conscious consumers" class="showcase__img" data-showcase-index="3" />
+            <div class="showcase__badge">EcoBrew Batch 01</div>
+          </div>
+        </div>
+
+        <!-- Right Copy Panel (Presentation Text) -->
+        <div class="why__content">
+          <div class="why__intro reveal" style="--d:.08s">
+            <p class="eyebrow">03 — Why EcoBrew</p>
+            <h2 class="headline why__title">
+              Better in <span class="amber">every</span> sip.
+              <img src="images/logo.png" alt="EcoBrew logo" class="why__title-logo" />
+            </h2>
+          </div>
+
+          <div class="cardslider reveal" data-slider style="--d:.12s">
+            <div class="why__grid cardslider__track">
+              
+              <!-- Slide 01 -->
+              <article class="card" data-card-index="0">
+                <span class="card__number">01</span>
+                <h3>Eco-friendly packaging</h3>
+                <p>Recyclable bottles and lower-waste materials, by design — not as an afterthought.</p>
+              </article>
+
+              <!-- Slide 02 -->
+              <article class="card" data-card-index="1">
+                <span class="card__number">02</span>
+                <h3>Fresh cold brew taste</h3>
+                <p>Slow-steeped for a smooth, low-acidity flavour that stays crisp and clean.</p>
+              </article>
+
+              <!-- Slide 03 -->
+              <article class="card" data-card-index="2">
+                <span class="card__number">03</span>
+                <h3>Made for daily moments</h3>
+                <p>Grab-and-go ready for the commute, the desk, and every pause in between.</p>
+              </article>
+
+              <!-- Slide 04 -->
+              <article class="card" data-card-index="3">
+                <span class="card__number">04</span>
+                <h3>Built for conscious consumers</h3>
+                <p>For people who want great coffee and better everyday choices — no compromise.</p>
+              </article>
+
+            </div>
+            <div class="cardslider__nav" aria-label="Slider navigation">
+              <button class="cardslider__btn cardslider__btn--prev" data-slider-prev aria-label="Previous card">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+              </button>
+              <div class="cardslider__dots" data-slider-dots></div>
+              <button class="cardslider__btn cardslider__btn--next" data-slider-next aria-label="Next card">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============ Gallery mosaic ============ -->
+    <section id="gallery" class="section gallery" data-theme="ink">
+      <div class="wrap">
+        <div class="section__head gallery__head">
+          <p class="eyebrow reveal">04 — The look</p>
+          <h2 class="headline gallery__title reveal" style="--d:.06s">Made to be <span class="amber">seen</span>.</h2>
+        </div>
+        <div class="mosaic">
+          <figure class="mo mo--big reveal"><img src="images/why-1.png" alt="EcoBrew eco-friendly packaging" loading="lazy" /><figcaption>Packaging</figcaption></figure>
+          <figure class="mo reveal" style="--d:.06s"><img src="images/tab-steep.png" alt="EcoBrew cold steep" loading="lazy" /><figcaption>The craft</figcaption></figure>
+          <figure class="mo reveal" style="--d:.1s"><img src="images/hero-1.png" alt="EcoBrew cold brew bottle" loading="lazy" /><figcaption>The bottle</figcaption></figure>
+          <figure class="mo mo--wide reveal" style="--d:.14s"><img src="images/why-3.png" alt="EcoBrew daily moment" loading="lazy" /><figcaption>Everyday</figcaption></figure>
+          <figure class="mo reveal" style="--d:.18s"><img src="images/tab-caramel.png" alt="EcoBrew iced caramel" loading="lazy" /><figcaption>With oat</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CTA ============ -->
+    <section id="cta" class="section cta" data-theme="amber">
+      <div class="cta__dots" aria-hidden="true"></div>
+      <div class="cta__inner">
+        <p class="eyebrow reveal">Available now</p>
+        <h2 class="headline cta__title reveal" style="--d:.08s">Try EcoBrew<br />Cold Brew Today</h2>
+        <p class="cta__sub reveal" style="--d:.16s">Sip better. Choose better.</p>
+        <div class="hero__actions reveal" style="--d:.22s">
+          <a class="btn btn--ink" href="#top">Get EcoBrew
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a class="btn btn--outline-ink" href="#idea">Read the story</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ Footer ============ -->
+  <footer class="site-footer" data-theme="ink">
+    <div class="footer__top wrap">
+      <div class="footer__brand">
+        <img src="images/logo-cream.png" alt="EcoBrew" class="footer__logo" />
+        <p class="footer__tag">Good coffee.<br />Better choices.</p>
+      </div>
+      <div class="footer__cols">
+        <div>
+          <h4>Explore</h4>
+          <a href="#idea">The Idea</a><a href="#product">Product</a><a href="#why">Why EcoBrew</a><a href="#gallery">Gallery</a>
+        </div>
+        <div>
+          <h4>Brand</h4>
+          <span>Fresh · Sustainable</span><span>Modern · Youthful</span><span>Premium-simple</span>
+        </div>
+        <div>
+          <h4>Type</h4>
+          <span>Druk — headlines</span><span>Gilroy — body</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom wrap">
+      <span>© 2026 EcoBrew. Fictional brand for launch concept.</span>
+      <span>Sip better. Choose better.</span>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
